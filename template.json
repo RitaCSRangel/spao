@@ -7,27 +7,60 @@
     "templates": {
       "actorBase": {
         "hp": {
-          "value": 6,
-          "max": 6
+          "value": 0,
+          "max": 0,
+          "damage": 0
         },
         "armor": {
-          "value": 6
+          "value": 60
+        },
+        "focus": {
+          "value": 0,
+          "max": 0,
+          "used": 0
         },
         "movement": {
-          "value": 20
+          "value": 0
         },
         "abilities": {
           "for": {
-            "value": 10
+            "value": 0
           },
           "des": {
-            "value": 10
+            "value": 0
           },
           "int": {
-            "value": 10
+            "value": 0
           },
           "car": {
-            "value": 10
+            "value": 0
+          }
+        },
+        "skills": {
+          "atle": {
+            "value": 0,
+            "atrib": "",
+            "prof": "untrained"
+          },
+          "eng": {
+            "value": 0,
+            "atrib": "",
+            "prof": "untrained"
+          },
+          "com": {
+            "value": 0,
+            "atrib": "",
+            "prof": "untrained"
+          },
+          "conhe": {
+            "value": 0,
+            "atrib": "",
+            "prof": "untrained"
+          },
+          "perc": {
+            "value": 0,
+            "atrib": "",
+            "prof": "untrained"
           }
         }
       }
@@ -59,14 +92,21 @@
       "object"
     ],
     "templates": {
-      "universal": {
+      "itemBase": {
         "description": "",
-        "equipped": false,
         "cost": 0,
         "quantity": 1
       },
-      "withDamage": {
-        "damageDice": ""
+      "equipable": {
+        "equipped": false
+      },
+      "hasDamage": {
+        "dice": {
+          "type": "",
+          "quantity": 0
+        },
+        "atrib": 0,
+        "prof": "untrained"
       },
       "consumable": {
         "uses": {
@@ -78,37 +118,38 @@
     "item": {
       "templates": [
         "base",
-        "universal",
-        "withDamage",
+        "itemBase",
+        "equipable",
+        "hasDamage",
         "consumable"
       ]
     },
     "weapon": {
       "templates": [
         "base",
-        "universal",
-        "withDamage",
-        "consumable"
+        "itemBase",
+        "hasDamage",
+        "equipable"
       ]
     },
     "armor": {
       "templates": [
         "base",
-        "universal",
-        "consumable"
+        "itemBase",
+        "equipable"
       ],
       "armor": 1
     },
     "spellbook": {
       "templates": [
         "base",
-        "universal"
+        "itemBase"
       ]
     },
     "object": {
       "templates": [
         "base",
-        "universal",
+        "itemBase",
         "consumable"
       ]
     }

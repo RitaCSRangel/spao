@@ -19,6 +19,12 @@
  * General style.                                                             * 
  ******************************************************************************/
 
+.spao {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+
 .spao.sheet.actor,
 .spao.sheet.item {
     min-height: 480px;
@@ -40,10 +46,9 @@
  ******************************************************************************/
 
 .charater-sheet-grid {
-    display: grid;
+    display: flex;
     gap: 8px;
-    grid-template-columns: 140px 1fr 1fr;
-    grid-template-rows: 140px 112px 1fr;
+    width: 100%;
 }
 
 .character-sheet-section-name {
@@ -77,7 +82,7 @@
 
 .character-sheet-section-abilities {
     display: grid;
-    row-gap: 2px;
+    row-gap: 10px;
     grid-template-rows: 36px 36px 36px;
 }
 
@@ -98,7 +103,6 @@
 .character-sheet-2col {
     display: flex;
     justify-content: space-around;
-    width: max-content;
     gap: 20px;
 }
 
@@ -118,12 +122,32 @@
  ******************************************************************************/
 
 .item-sheet-grid {
-    display: grid;
-    column-gap: 8px;
-    row-gap: 8px;
-    grid-template-columns: 140px 1fr 1fr;
-    grid-template-rows: 46px 36px 36px 36px 36px 36px 1fr;
-    height: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.item-sheet-grid-sections {
+    display: flex;
+    gap: 10px;
+}
+
+.item-sheet-name {
+    grid-column-start: 1;
+    grid-column-end: 3;
+    background: black !important;
+    border: none !important;
+    color: #f5f5f5 !important;
+    font-family: "Alegreya", Times, "Times New Roman", Georgia, serif !important;
+    font-size: 23px !important;
+    font-variant: small-caps;
+    font-weight: 500;
+    padding: 15px !important;
+    height: 40px;
+}
+
+.item-sheet-resource-label {
+    width: 100px;
 }
 
 .item-sheet-section-portrait {
@@ -138,6 +162,77 @@
     grid-column-end: 4;
     grid-row-start: 1;
     grid-row-end: 2;
+}
+
+.item-sheet-section-info {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    width: 100%;
+}
+
+.item-sheet-section-stats {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+}
+
+.item-resource-counter {
+    border: 2px solid black;
+    border-radius: 5px;
+    display: flex;
+    height: 36px;
+    width: 45%;
+}
+
+.item-resource-counter a,
+.item-resource-counter label {
+    background-color: black;
+    color: #f5f5f5;
+    font-family: "Alegreya", Times, "Times New Roman", Georgia, serif;
+    font-size: 17px;
+    font-weight: 500;
+    line-height: 32px;
+    text-align: center;
+}
+
+.item-resource-counter-dropdown {
+    border: 2px solid black;
+    border-radius: 5px;
+    display: flex;
+    height: 36px;
+}
+
+.item-resource-counter-dropdown a,
+.item-resource-counter-dropdown label {
+    background-color: black;
+    color: #f5f5f5;
+    font-family: "Alegreya", Times, "Times New Roman", Georgia, serif;
+    font-size: 17px;
+    font-weight: 500;
+    line-height: 32px;
+    text-align: center;
+}
+
+.item-sheet-resource-dropdowns {
+    display: flex;
+    gap: 10px;
+    flex-direction: column;
+    width: 100%;
+}
+
+.item-sheet-skills {
+    padding: 4px 8px;
+    border: 1px solid #cccccc00;
+    border-radius: 3px;
+    background: #ffffff00;
+    width: 100%;
+}
+
+.item-resource-dropdown-wrapper {
+    display: flex;
+    min-width: 55%;
+    align-items: center;
 }
 
 .item-sheet-section-tabs {
@@ -162,7 +257,6 @@
     border: 2px solid black;
     border-radius: 5px;
     height: 230px;
-    width: 100%;
     object-fit: contain;
 }
 
@@ -206,7 +300,7 @@
 
 .resource-roll-attribute {
     display: flex;
-    width: 100px;
+    width: 200px;
     align-items: center;
     justify-content: center;
 }
@@ -234,6 +328,9 @@
 
 .resource-input-wrapper {
     display: flex;
+    align-items: center;
+    padding: 2px;
+    min-width: 30px;
 }
 
 .resource-input-wrapper input {
@@ -602,8 +699,75 @@
 .spao.chat-card {
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     font-size: 13px;
+    border: 1px solid #333;
+    border-radius: 5px;
+    background: #f8f8f8;
+    margin: 5px 0;
 }
 
 .spao.chat-card strong {
     color: #333;
+}
+
+
+/******************************************************************************
+ * SKILLS    .                                                                *
+ ******************************************************************************/
+
+/* Estilos para a seção de Habilidades */
+.skills-section {
+    padding: 10px;
+}
+
+.skill-elements {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.skills-grid {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.skill-row {
+    display: flex;
+    grid-template-columns: 120px 60px 120px 120px;
+    align-items: center;
+    gap: 10px;
+    padding: 6px 10px;
+    background: rgb(255 255 255 / 98%);
+    border-radius: 4px;
+    justify-content: space-between;
+}
+
+.skill-roll {
+    font-weight: bold;
+    color: #333;
+    width: 100px;
+}
+
+.skill-bonus {
+    text-align: center;
+    font-size: 1.1em;
+    font-weight: bold;
+    padding: 4px;
+    max-width: 50px;
+}
+
+.skill-bonus input {
+    background: none !important;
+    border: none !important;
+    margin: auto;
+    text-align: center !important;
+    width: 100%;
+}
+
+.skill-attribute,
+.skill-proficiency {
+    padding: 4px 8px;
+    border: 1px solid #ccc;
+    border-radius: 3px;
+    background: white;
 }

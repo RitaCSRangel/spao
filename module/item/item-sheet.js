@@ -7,8 +7,8 @@ export class SpaoItemSheet extends ItemSheet {
   static get defaultOptions() {
     return foundry.utils.mergeObject(super.defaultOptions, {
       classes: ['spao', 'sheet', 'item'],
-      width: 480,
-      height: 480,
+      width: 600,
+      height: 600,
       tabs: [
         {
           navSelector: ".tabs",

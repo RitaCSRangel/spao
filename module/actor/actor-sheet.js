@@ -11,9 +11,9 @@ export class SpaoActorSheet extends ActorSheet {
       height: 600,
       tabs: [
         {
-          navSelector: ".sheet-tabs",
-          contentSelector: ".sheet-body",
-          initial: "features",
+          navSelector: ".tabs",
+          contentSelector: ".content",
+          initial: "sills",
         },
       ],
       dragDrop: [{ dragSelector: ".spao-items-list-row", dropSelector: null }],
@@ -195,14 +195,15 @@ export class SpaoActorSheet extends ActorSheet {
     /* --------------- CUSTOM EVENTS  ---------------
     ------------------------------------------------- */
 
+    html.find(".attack-roll").on("click", (ev) => this.RolarAtaque(ev));
+    html.find('.skill-roll').click(this.RolarSkill.bind(this));
+
     // html.find(".resistance-values").on("click", (ev) => this.AbrirDialogResistencia(ev));
     // html.find(".item-equip").on("click", (ev) => this.EquiparItem(ev));
     // html.find(".debilitated").on("click", (ev) => this.MarcarFerimento(ev));
     // html.find(".ability-roll").on("click", (ev) => this.RolarAtributo(ev));
     // html.find(".defense-roll").on("click", (ev) => this.RolarDefesa(ev));
     // html.find(".spao-input").on("change", (ev) => this.LimparAtributoSelecionado(ev));
-    html.find(".attack-roll").on("click", (ev) => this.rollAttack(ev));
-
     // html.find(".willpowercheckbox-expended").on("click", (ev) => this.GastarWillpower(ev, false));
     // html.find(".willpowercheckbox-available").on("click", (ev) => this.GastarWillpower(ev, true));
     // html.find(".nd-advantage").on("click", (ev) => AtualizarVantagemMonstro(true, this.actor));
@@ -297,301 +298,165 @@ export class SpaoActorSheet extends ActorSheet {
 
   //----------------------------------------------------------------------------------
 
-  async RolarAtaque(ev) {
-    const element = ev.currentTarget;
-    const dataset = element.dataset;
-    const li = $(ev.currentTarget).parents(".item");
-    const item = this.actor.items.get(li.data("itemId"));
+  async RolarSkill(event) {
+    event.preventDefault();
+    const element = event.currentTarget;
+    const skillKey = element.dataset.skill;
 
-    // let data = {
-    //   ranged: item.system.type.ranged,
-    //   melee: item.system.type.melee
-    // }
+    // Obter dados atuais do sistema
+    const actorData = this.actor.system;
+    const skill = actorData.skills[skillKey];
 
-    //Example: let r = new Roll("2d20kh + @prof + @strMod", {prof: 2, strMod: 4});
-    let formula = "1d20+ @for"
-    let roll = new Roll(formula, { for: this.actor.system.abilities.for.value });
-    await roll.evaluate();
+    if (!skill) return;
 
-    const label = "Ataque";
-    const rolled = roll.terms[0].results[0].result;
-    const result = roll.total === 0 ? game.i18n.localize("SPAO.Fail") : game.i18n.localize("SPAO.Success");
-    const resultCls = roll.total === 0 ? "failure" : "success";
+    // Obter valor da skill
+    const skillValue = skill.value;
 
-    roll.toMessage({
-      speaker: ChatMessage.getSpeaker({ actor: this.actor }),
-      flavor: label,
-      content: `<div class="dice-roll"><div class="dice-result"><div class="dice-formula">${roll.formula}</div><div class="dice-tooltip" style="display: none;"><section class="tooltip-part"><div class="dice"><header class="part-header flexrow"><span class="part-formula">${roll.formula}</span></header><ol class="dice-rolls"><li class="roll die d20">${rolled}</li></ol></div></section></div><h4 class="dice-total ${resultCls}">${result} (${rolled})</h4</div></div>`,
-    });
-  }
+    // Obter valor do atributo
+    const attributeValue = actorData.abilities[skill.atrib]?.value || 0;
 
-  async rollAttack(ev) {
-    // Rolagem de Ataque
-    let attackFormula = "1d20 + @for";
-    let attackRoll = new Roll(attackFormula, {
-      for: this.actor.system.abilities.for.value
-    });
-    await attackRoll.evaluate();
-
-    // Determinar o token alvo
-    let targetActor = null;
-    let targetArmor = 0;
-
-    if (canvas.tokens.controlled.length > 0) {
-      // Usa o primeiro token selecionado
-      targetActor = canvas.tokens.controlled[0].actor;
-      targetArmor = targetActor.system.armor?.value || 0;
-    } else {
-      // Sem token selecionado, usa armadura 0
-      targetActor = null;
-      targetArmor = 0;
+    // Calcular bônus de proficiência
+    let proficiencyBonus = 0;
+    switch (skill.prof) {
+      case 'untrained':
+        proficiencyBonus = -2;
+        break;
+      case 'trained':
+        proficiencyBonus = 2;
+        break;
+      case 'expert':
+        proficiencyBonus = 4;
+        break;
+      case 'master':
+        proficiencyBonus = 6;
+        break;
+      default:
+        proficiencyBonus = 0;
     }
 
-    // Verificar se o ataque acertou
-    const attackTotal = attackRoll.total;
-    const rolledValue = attackRoll.terms[0].results[0].result;
-    const isSuccess = attackTotal >= targetArmor;
-    const resultClass = isSuccess ? "success" : "failure";
+    // Calcular total
+    const totalBonus = skillValue + attributeValue + proficiencyBonus;
+    const formula = `1d20 + ${totalBonus}`;
 
-    // Rolagem de Dano (se acertou)
-    let damageRoll = null;
-    if (isSuccess && this.actor.system.damageDice) {
-      damageRoll = new Roll(this.actor.system.damageDice, {});
-      await damageRoll.evaluate();
-    }
+    // Criar e rolar
+    const roll = new Roll(formula);
+    await roll.roll({ async: true });
 
-    // Determinar tipo de dano (do item ou padrão)
-    const damageType = this.item?.system?.damage?.type || "Nenhum";
-
-    // Criar conteúdo HTML do template
-    const flavor = `${this.actor.name} <br/><small>Para: ${targetActor?.name || "Ninguém"}</small>`;
-
+    // Mensagem formatada
+    const skillName = game.i18n.localize(`SPAO.${skillKey}`);
     let data = {
-      name: this.item?.name,
-      attackRoll: attackRoll,
-      rolledValue: rolledValue,
-      attackTotal: attackTotal,
-      isSuccess: isSuccess,
-      damageRoll: damageRoll,
-      damageType: damageType,
-      targetActor: targetActor
+      skillName: skillName,
+      totalBonus: totalBonus,
+      skillValue: skillValue,
+      attributeValue: attributeValue,
+      proficiencyBonus: proficiencyBonus
     }
-    
-    const attackContent = await renderTemplate(
-      "systems/spao/templates/chat/attack.html",
+
+    const flavor = await renderTemplate(
+      "systems/spao/templates/chat/skill.html",
       data
     );
 
-    // Enviar mensagem para o chat
-    await ChatMessage.create({
-      user: game.user.id,
+    // Enviar para o chat
+    roll.toMessage({
       speaker: ChatMessage.getSpeaker({ actor: this.actor }),
-      flavor: flavor,
-      content: attackContent,
-      type: CONST.CHAT_MESSAGE_TYPES.ROLL,
-      roll: attackRoll
+      flavor: flavor
     });
-
-    // Também enviar rolagem de dano separadamente se necessário
-    if (damageRoll) {
-      await damageRoll.toMessage({
-        speaker: ChatMessage.getSpeaker({ actor: this.actor }),
-        flavor: `Dano - ${this.actor.name}`,
-        rollMode: game.settings.get("core", "rollMode")
-      }, {
-        rollMode: game.settings.get("core", "rollMode")
-      });
-    }
   }
 
-  async EquiparItem() {
-    // Ao fazer qualquer clique na ficha certifique-se de limpar o atributo selecionado primeiro.
-    this.LimparAtributoSelecionado();
-
+  async RolarAtaque(ev) {
+    // Obter o item de arma associado ao botão clicado
     const li = $(ev.currentTarget).parents(".item");
-    const item = this.actor.items.get(li.data("itemId"));
-    await item.update({ [`system.equiped`]: !item.system.equiped });
-  }
+    const itemId = li.data("itemId");
+    const item = this.actor.items.get(itemId);
 
-  async MarcarFerimento(ev) {
-    // Ao fazer qualquer clique na ficha certifique-se de limpar o atributo selecionado primeiro.
-    this.LimparAtributoSelecionado();
+    if (item) {
+      // Obter os valores da arma
+      const itemAttribute = item.system.atrib;
+      const attributeValue = this.actor.abilities[itemAttribute]?.value || 0;
+      const itemProficiency = item.system.prof;
+      const itemDamageDiceType = item.system.dice.type;
+      const itemDamageDiceQuantity = item.system.dice.quantity;
 
-    // Tem que ser a checkbox da ficha em questão, por isso ev.target ao invés de document, 
-    // para evitar problema quando + fichas estiverem abertas
-    let checked = ev.target.checked;
+      // Rolagem de Ataque
+      let attackFormula = "1d20 + " + attributeValue + itemProficiency;
+      let attackRoll = new Roll(attackFormula, {
+        for: this.actor.system.abilities.for.value
+      });
+      await attackRoll.evaluate();
 
-    await this.actor.update({ [`system.debilitated`]: checked });
-  }
+      // Determinar o token alvo
+      let targetActor = null;
+      let targetArmor = 0;
 
-  async RolarAtributo(ev) {
-    const element = ev.currentTarget;
-    const dataset = element.dataset;
-
-    if (context.abilityRoll == null) {
-      context.abilityRoll = [];
-    }
-
-    //Verificar se o objeto de seleção para esse ator já existe
-    let selection = context.abilityRoll.find(x => x.id === this.actor.id);
-
-    // Acabou de selecionar o primeiro
-    if (selection == null || selection == undefined) {
-
-      let selection = {
-        id: this.actor.id,
-        first: null,
-        second: null,
-        firstHtmlElement: null
+      if (canvas.tokens.controlled.length > 0) {
+        // Usa o primeiro token selecionado
+        targetActor = canvas.tokens.controlled[0].actor;
+        targetArmor = targetActor.system.armor?.value || 0;
+      } else {
+        // Sem token selecionado, usa armadura 0
+        targetActor = null;
+        targetArmor = 0;
       }
 
-      // Deixar a label vermelha para mostrar que foi selecionado
-      selection.firstHtmlElement = ev.target;
-      ev.target.style.color = "red";
+      // Verificar se o ataque acertou
+      const attackTotal = attackRoll.total;
+      const rolledValue = attackRoll.terms[0].results[0].result;
+      const isSuccess = attackTotal >= targetArmor;
+      const resultClass = isSuccess ? "success" : "failure";
 
-      // Guardar qual foi o atributo selecionado no contexto
-      selection.first = dataset.label;
+      // Rolagem de Dano (se acertou)
+      let damageRoll = null;
+      let damageRollFormula = itemDamageDiceQuantity + itemDamageDiceType;
 
-      context.abilityRoll.push(selection)
+      if (isSuccess && this.actor.system.damageDice) {
+        damageRoll = new Roll(damageRollFormula, {});
+        await damageRoll.evaluate();
+      }
 
-      //Volta para poder selecionar o segundo
-      return;
-    }
+      // Determinar tipo de dano (do item ou padrão)
+      const damageType = this.item?.system?.damage?.type || "Nenhum";
 
-    //Acabou de selecionar o segundo
-    if (selection.second == null) {
+      // Criar conteúdo HTML do template
+      const flavor = `${this.actor.name} <br/><small>Para: ${targetActor?.name || "Ninguém"}</small>`;
 
-      // Guardar qual foi o atributo selecionado no contexto
-      selection.second = dataset.label;
+      let data = {
+        name: this.item?.name || "Ataque de Arma",
+        attackRoll: attackRoll,
+        rolledValue: rolledValue,
+        attackTotal: attackTotal,
+        isSuccess: isSuccess,
+        damageRoll: damageRoll,
+        damageType: damageType,
+        targetActor: targetActor
+      }
 
-      // Remover o estilo adicionado no primeiro atributo
-      let element = selection.firstHtmlElement;
-      element.style.color = "";
-
-    }
-
-    // Quando os dois estiverem selecionados, seguir para a dialog de roll
-    if (selection.first != null && selection.second != null) {
-      const rolarAtributo = await renderTemplate(
-        "systems/spao/templates/actor/dialog/modifiers.hbs"
+      const attackContent = await renderTemplate(
+        "systems/spao/templates/chat/attack.html",
+        data
       );
 
-      new Dialog({
-        title: "Dificuldade",
-        content: rolarAtributo,
-        buttons: {
-          button1: {
-            label: "Rolar teste",
-            callback: async () => {
+      // Enviar mensagem para o chat
+      await ChatMessage.create({
+        user: game.user.id,
+        speaker: ChatMessage.getSpeaker({ actor: this.actor }),
+        flavor: flavor,
+        content: attackContent,
+        type: CONST.CHAT_MESSAGE_TYPES.ROLL,
+        roll: attackRoll
+      });
 
-              // Pegando o valor de dificuldade inserido
-              let difficulty = Number(document.getElementById("difficulty-value").value);
-              let modifier = Number(document.getElementById("modifier-value").value);
-              let adv = document.getElementById("modifierAdv") != null ? document.getElementById("modifierAdv").checked : false;
-              let dsv = document.getElementById("modifierDsv") != null ? document.getElementById("modifierDsv").checked : false;
-              let exp6 = document.getElementById("exp6-value").checked;
-
-              RolarAtributo(this.actor, dataset, difficulty, adv, dsv, modifier, exp6);
-            },
-            icon: `<i class="fas fa-check"></i>`,
-          },
-          button2: {
-            label: "Cancelar",
-            callback: () => {
-              // Cancela a ação
-              this.LimparAtributoSelecionado();
-            },
-            icon: `<i class="fas fa-times"></i>`,
-          },
-        },
-        close: () => this.LimparAtributoSelecionado()
-      }).render(true);
-
+      // Também enviar rolagem de dano separadamente se necessário
+      if (damageRoll) {
+        await damageRoll.toMessage({
+          speaker: ChatMessage.getSpeaker({ actor: this.actor }),
+          flavor: `Dano - ${this.actor.name}`,
+          rollMode: game.settings.get("core", "rollMode")
+        }, {
+          rollMode: game.settings.get("core", "rollMode")
+        });
+      }
     }
-  }
-
-  async RolarDefesa(ev) {
-    // Ao fazer qualquer clique na ficha certifique-se de limpar o atributo selecionado primeiro.
-    this.LimparAtributoSelecionado();
-
-    const element = ev.currentTarget;
-    const dataset = element.dataset;
-
-    const rolarDefesa = await renderTemplate(
-      "systems/spao/templates/actor/dialog/modifiers.hbs"
-    );
-
-    new Dialog({
-      title: "Dificuldade",
-      content: rolarDefesa,
-      buttons: {
-        button1: {
-          label: "Rolar teste",
-          callback: async () => {
-
-            // Pegando o valor de dificuldade inserido
-            let difficulty = Number(document.getElementById("difficulty-value").value);
-            let modifier = Number(document.getElementById("modifier-value").value);
-            let adv = document.getElementById("modifierAdv") != null ? document.getElementById("modifierAdv").checked : false;
-            let dsv = document.getElementById("modifierDsv") != null ? document.getElementById("modifierDsv").checked : false;
-            let exp6 = document.getElementById("exp6-value").checked;
-
-            RolarDefesa(this.actor, difficulty, adv, dsv, modifier, exp6);
-          },
-          icon: `<i class="fas fa-check"></i>`,
-        },
-        button2: {
-          label: "Cancelar",
-          callback: () => {
-            // Cancela a ação
-          },
-          icon: `<i class="fas fa-times"></i>`,
-        },
-      },
-      close: () => this.LimparAtributoSelecionado()
-    }).render(true);
-  }
-
-  async EquiparItem() {
-    // Ao fazer qualquer clique na ficha certifique-se de limpar o atributo selecionado primeiro.
-    this.LimparAtributoSelecionado();
-
-    const li = $(ev.currentTarget).parents(".item");
-    const item = this.actor.items.get(li.data("itemId"));
-    await item.update({ [`system.equiped`]: !item.system.equiped });
-  }
-
-  async MarcarFerimento(ev) {
-    // Ao fazer qualquer clique na ficha certifique-se de limpar o atributo selecionado primeiro.
-    this.LimparAtributoSelecionado();
-
-    // Tem que ser a checkbox da ficha em questão, por isso ev.target ao invés de document, 
-    // para evitar problema quando + fichas estiverem abertas
-    let checked = ev.target.checked;
-
-    await this.actor.update({ [`system.debilitated`]: checked });
-  }
-
-  async GastarWillpower(ev, gastar) {
-
-    // Ao fazer outro clique na ficha certifique-se de limpar o atributo selecionado primeiro
-    this.LimparAtributoSelecionado();
-
-    var currentExpended = document.getElementsByClassName("willpowercheckbox-expended");
-    let usedPoints = 0;
-
-    for (let item of currentExpended) {
-      usedPoints++;
-    }
-
-    if (gastar == true) {
-      usedPoints++;
-    } else {
-      usedPoints--;
-    }
-
-    await this.actor.update({ [`system.abilities.willpower.used`]: usedPoints });
-
   }
 
 }

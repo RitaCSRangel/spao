@@ -32,7 +32,7 @@ export class SpaoActor extends Actor {
     // this.system.showDesc = (this.system.description !== undefined && this.system.description !== null);
 
     if (this.type === "character") this._prepareCharacterData();
-    // if (this.type === "npc") this._prepareNpcData();
+    if (this.type === "npc") this._prepareNpcData();
   }
 
   /**
@@ -41,21 +41,20 @@ export class SpaoActor extends Actor {
   _prepareCharacterData(actorData) {
     if (this.type !== "character") return;
 
-    // Make modifications to data here. For example:
-    // this.system.armor = this.calcArmor();
-    // this.system.slotsUsed = this.calcSlotsUsed();
-    // this.system.slotsMax = this.calcCurrentMaxSlots();
+    // Make modifications to data here.
+
+    this.system.hp.max = this.calculateMaxHealth();
+    this.system.hp.value = this.calculateCurrentHealth();
+    this.system.armor.value = this.calculateArmor();
+    this.system.focus.max = this.calculateMaxFocus();
+    this.system.focus.value = this.calculateCurrentFocus();
   }
 
   /**
    * Prepare NPC type specific data.
    */
   _prepareNpcData(actorData) {
-    if (this.type  !== "npc") return;
-
-    // Make modifications to data here. For example:
-    const systemData = actorData.system;
-    systemData.xp = systemData.cr * systemData.cr * 100;
+    if (this.type !== "npc") return;
   }
 
   /**
@@ -99,5 +98,36 @@ export class SpaoActor extends Actor {
     if (this.type !== "npc") return;
 
     // Process additional NPC data here.
+  }
+
+  calculateMaxHealth() {
+    const health = 10 + this.system.abilities.for.value;
+    return Math.round(health);
+  }
+
+  calculateCurrentHealth() {
+    const health = this.system.hp.max - this.system.hp.damage;
+    return Math.round(health);
+  }
+
+  calculateArmor() {
+    const armorItems = this.items
+      .filter((item) => ["armor", "item"].includes(item.type))
+      .filter((item) => item.system.equipped ?? false)
+      .map((item) => parseInt(item.system.armor ?? 0, 10))
+      .reduce((a, b) => a + b, 0);
+
+    const armor = this.system.abilities.des.value + armorItems;
+    return Math.round(armor);
+  }
+
+  calculateMaxFocus() {
+    const focus = 0;
+    return Math.round(focus);
+  }
+
+  calculateCurrentFocus() {
+    const focus = this.system.focus.max - this.system.focus.used;
+    return Math.round(focus);
   }
 }

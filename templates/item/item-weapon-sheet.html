@@ -1,56 +1,106 @@
-<form class="cairn" autocomplete="off">
+<form class="spao" autocomplete="off">
     <div class="item-sheet-grid weapon">
-        <!-- Portrait -->
-        <div class="item-sheet-section-portrait">
-            <img class="portrait" src="{{data.img}}" data-edit="img" title="{{data.name}}" />           
-        </div>
-        <!-- Name -->
-        <div class="item-sheet-section-name">
-            <input class="name-input" type="text" name="name" value="{{data.name}}" placeholder="{{ localize 'SPAO.Name' }}" />
-        </div>
-        <!-- Equipped -->
-        <div class="resource-counter long-counter">
-            <label class="large-resource-label" for="system.equipped">{{ localize 'SPAO.Equipped' }}</label>
-            <div class="resource-input-wrapper">
-                <input type="checkbox" {{checked data.system.equipped}} name="system.equipped" id="system.equipped"
-                       value="{{data.system.equipped}}" data-dtype="Boolean" {{ disabled (not item.system.isEquipable) }} />
-            </div>
-        </div>
-        
 
-         <!-- Damage -->
-         <div class="resource-counter short-counter" >
-            <label class="short-resource-label" for="system.damageFormula" 
-                title="{{ localize 'SPAO.Damage' }}">{{ localize 'SPAO.Damage' }}</label>
-            <div class="resource-input-wrapper">
-                <input type="text" name="system.damageDice" id="system.damageDice"
-                       value="{{data.system.damageDice}}" data-dtype="String" />
+        <div class="item-sheet-grid-sections">
+            <!-- Portrait -->
+            <div class="item-sheet-section-portrait">
+                <img class="portrait" src="{{data.img}}" data-edit="img" title="{{data.name}}" />
             </div>
-         </div>
-         
-        <!-- Number of uses -->
-        <div class="resource-counter long-counter">
-            <label class="large-resource-label" for="system.uses.value">{{ localize 'SPAO.Uses' }}</label>
-            <div class="resource-input-wrapper">
-                <input type="text" name="system.uses.value" id="system.uses.value"
-                        value="{{data.system.uses.value}}" data-dtype="Number" />
-            </div>
-        </div>
-        <div class="resource-counter long-counter">
-            <label class="large-resource-label" for="system.uses.max">{{ localize 'SPAO.MaxUses' }}</label>
-            <div class="resource-input-wrapper">
-                <input type="text" name="system.uses.max" id="system.uses.max"
-                      value="{{data.system.uses.max}}" data-dtype="Number" />
-            </div>
-        </div>
 
-         <!-- Cost -->
-         <div class="resource-counter long-counter">
-            <label class="large-resource-label" for="system.cost.value">{{ localize 'SPAO.Cost' }}</label>
-            <div class="resource-input-wrapper">
-                <input type="text" name="system.cost.value" id="system.cost.value"
-                    value="{{data.system.cost.value}}" data-dtype="Number" />
+            <!-- INFORMATION -->
+            <div class="item-sheet-section-info">
+
+                <!-- Name -->
+                <div class="item-sheet-section-name">
+                    <input class="item-sheet-name" type="text" name="name" value="{{data.name}}"
+                        placeholder="{{ localize 'SPAO.Name' }}" />
+                </div>
+
+                <div class="item-sheet-section-stats">
+                    <!-- Equipped -->
+                    <div class="item-resource-counter short-counter">
+                        <label class="item-sheet-resource-label" for="system.equipped">{{ localize 'SPAO.Equipped'
+                            }}</label>
+                        <div class="resource-input-wrapper">
+                            <input type="checkbox" {{checked data.system.equipped}} name="system.equipped"
+                                id="system.equipped" value="{{data.system.equipped}}" data-dtype="Boolean" {{ disabled
+                                (not item.system.isEquipable) }} />
+                        </div>
+                    </div>
+
+                    <!-- Cost -->
+                    <div class="item-resource-counter short-counter">
+                        <label class="item-sheet-resource-label" for="system.cost.value">{{ localize 'SPAO.Cost'
+                            }}</label>
+                        <div class="resource-input-wrapper">
+                            <input type="text" name="system.cost.value" id="system.cost.value"
+                                value="{{data.system.cost.value}}" data-dtype="Number" />
+                        </div>
+                    </div>
+
+                    <div class="item-sheet-resource-dropdowns">
+
+                        <!-- Damage -->
+                        <div class="item-resource-counter  short-counter">
+                            <label class="item-sheet-resource-label" title="{{ localize 'SPAO.Damage' }}">{{
+                                localize 'SPAO.Damage' }}</label>
+
+                            <div class="resource-input-wrapper">
+                                <input type="text" name="system.dice.quantity" id="system.dice.quantity"
+                                    value="{{data.system.dice.quantity}}" data-dtype="String" />
+                                <select name="system.dice.type" class="item-sheet-skills">
+                                    {{#select data.system.dice.type}}
+                                    <option value=""></option>
+                                    <option value="d2">d2</option>
+                                    <option value="d4">d4</option>
+                                    <option value="d6">d6</option>
+                                    <option value="d8">d8</option>
+                                    <option value="d10">d10</option>
+                                    <option value="d12">d12</option>
+                                    {{/select}}
+                                </select>
+                            </div>
+                        </div>
+
+                        <!-- Dropdown para escolher o atributo -->
+                        <div class="item-resource-counter-dropdown short-counter">
+                            <label class="item-sheet-resource-label" for="system.atrib">{{ localize
+                                'SPAO.Attribute'
+                                }}</label>
+                            <div class="item-resource-dropdown-wrapper">
+                                <select name="system.atrib" class="item-sheet-skills">
+                                    {{#select data.system.atrib}}
+                                    <option value="">Atributo</option>
+                                    <option value="for">{{localize 'SPAO.for'}}</option>
+                                    <option value="des">{{localize 'SPAO.des'}}</option>
+                                    <option value="int">{{localize 'SPAO.int'}}</option>
+                                    <option value="car">{{localize 'SPAO.car'}}</option>
+                                    {{/select}}
+                                </select>
+                            </div>
+                        </div>
+
+
+                        <!-- Dropdown para escolher a proficiência -->
+                        <div class="item-resource-counter-dropdown short-counter">
+                            <label class="item-sheet-resource-label" for="system.prof">{{ localize
+                                'SPAO.Proficiency'
+                                }}</label>
+                            <div class="item-resource-dropdown-wrapper">
+                                <select name="system.prof" class="item-sheet-skills">
+                                    {{#select data.system.prof}}
+                                    <option value="untrained">{{localize 'SPAO.untrained'}}</option>
+                                    <option value="trained">{{localize 'SPAO.trained'}}</option>
+                                    <option value="expert">{{localize 'SPAO.expert'}}</option>
+                                    <option value="master">{{localize 'SPAO.master'}}</option>
+                                    {{/select}}
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
+
         </div>
 
         <div class="item-sheet-section-tabs">
@@ -59,7 +109,8 @@
             </nav>
             <section class="content">
                 <div class="tab" data-group="primary" data-tab="description">
-                    {{ editor enrichedDescription target="system.description" button=true owner=owner editable=editable engine="prosemirror" collaborate=true }}
+                    {{ editor enrichedDescription target="system.description" button=true owner=owner editable=editable
+                    engine="prosemirror" collaborate=true }}
                 </div>
             </section>
         </div>

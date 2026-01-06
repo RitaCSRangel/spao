@@ -77,5 +77,21 @@
   "SPAO.des": "Destreza",
   "SPAO.int": "Inteligência",
   "SPAO.car": "Carisma",
-  "SPAO.Combat": "Combate Rápido"
+  "SPAO.Combat": "Combate Rápido",
+  "SPAO.Focus": "Foco",
+  "SPAO.Skills": "Habilidades",
+  "SPAO.Talents": "Talentos",
+  "SPAO.Magic": "Magia",
+  "SPAO.Inventory": "Inventário",
+  "SPAO.atle": "Atletismo",
+  "SPAO.eng": "Enganação",
+  "SPAO.com": "Comunicação",
+  "SPAO.conhe": "Conhecimento",
+  "SPAO.perc": "Percepção",
+  "SPAO.untrained": "Não treinado",
+  "SPAO.trained": "Treinado",
+  "SPAO.master": "Mestre",
+  "SPAO.expert": "Especialista",
+  "SPAO.Attribute": "Atributo",
+  "SPAO.Proficiency": "Proficiência"
 }

@@ -6,6 +6,7 @@
 
         <!-- INFORMAÇÕES-->
         <div class="character-sheet-section-name">
+
             <!-- INFORMAÇÕES: NOME -->
             <input class="name-input" type="text" name="name" value="{{data.name}}"
                 placeholder="{{ localize 'SPAO.Name' }}" />
@@ -14,7 +15,7 @@
             <input class="background-input" type="text" name="system.background" value="{{data.system.background}}"
                 placeholder="{{ localize 'SPAO.Background' }}" />
 
-            <!-- INFORMAÇÕES: VIDA, ARMADURA, MOVIMENTO E ATRIBUTOS-->
+            <!-- INFORMAÇÕES: VIDA, ARMADURA, FOCO, MOVIMENTO E ATRIBUTOS-->
             <div class="character-sheet-2col">
                 <div class="character-sheet-section-derived">
 
@@ -39,6 +40,18 @@
                         </div>
                     </div>
 
+                    <!-- FOCO -->
+                    <div class="resource-counter hp-counter">
+                        <label for="system.focus.value">{{ localize 'SPAO.Focus' }}</label>
+                        <div class="resource-input-wrapper">
+                            <input type="text" name="system.focus.value" id="system.focus.value"
+                                value="{{data.system.focus.value}}" data-dtype="Number" />
+                            <span> / </span>
+                            <input type="text" name="system.focus.max" value="{{data.system.focus.max}}"
+                                data-dtype="Number" />
+                        </div>
+                    </div>
+
                     <!-- MOVIMENTO -->
                     <div class="resource-counter hp-counter">
                         <label for="system.movement.value">{{ localize 'SPAO.Movement' }}</label>
@@ -52,10 +65,8 @@
                 <!-- ATRIBUTOS -->
                 <div class="character-sheet-section-abilities">
                     {{#each data.system.abilities as |ability key|}}
-                    <div class="resource-counter {{key}}-counter">
-                        <a class="resource-roll-attribute" for="system.abilities.{{key}}.value"
-                            data-roll="d20cs<=@abilities.{{key}}.value"
-                            data-label="{{localize (concat 'SPAO.' key)}}">{{localize (concat 'SPAO.' key)}}</a>
+                    <div class="resource-counter hp-counter">
+                        <label for="system.abilities.{{key}}.value">{{localize (concat 'SPAO.' key)}}</label>
                         <div class="resource-input-wrapper">
                             <input type="text" name="system.abilities.{{key}}.value" value="{{ability.value}}"
                                 data-dtype="Number" />
@@ -86,5 +97,81 @@
             {{/each}}
         </div>
     </div>
-    
+
+    <!-- TABS -->
+    <div class="character-sheet-section-tabs">
+
+        <!-- TABS: NAV HEADER -->
+        <nav class="tabs" data-group="primary">
+            <a class="item" data-group="primary" data-tab="skills">{{ localize 'SPAO.Skills' }}</a>
+            <a class="item" data-group="primary" data-tab="talents">{{ localize 'SPAO.Talents' }}</a>
+            <a class="item" data-group="primary" data-tab="magic">{{ localize 'SPAO.Magic' }}</a>
+            <a class="item" data-group="primary" data-tab="inventory">{{ localize 'SPAO.Inventory' }}</a>
+            <a class="item" data-group="primary" data-tab="notes">{{ localize 'SPAO.Notes' }}</a>
+        </nav>
+
+
+        <section class="content">
+
+            <!-- TABS: SKILLS -->
+            <div class="tab" data-group="primary" data-tab="skills">
+                <div class="skills-section">
+                    <div class="skills-grid">
+                        <div class="character-sheet-section-abilities">
+                            {{#each data.system.skills as |skill key|}}
+                            <div class="skill-row">
+
+                                <div class="skill-elements">
+                                    <a class="skill-roll" data-skill="{{key}}">{{localize (concat 'SPAO.' key)}}</a>
+                                </div>
+
+                                <div class="skill-elements">
+
+                                    <!-- Campo para mostrar o bônus calculado (somente leitura) -->
+                                    <div class="skill-bonus">
+                                        <input type="text" name="system.skills.{{key}}.value" value="{{skill.value}}"
+                                            data-dtype="Number" />
+                                    </div>
+
+                                    <!-- Dropdown para escolher o atributo -->
+                                    <select name="system.skills.{{key}}.atrib" class="skill-attribute">
+                                        {{#select (lookup skill 'atrib')}}
+                                        <option value="">Atributo</option>
+                                        <option value="for">{{localize 'SPAO.for'}}</option>
+                                        <option value="des">{{localize 'SPAO.des'}}</option>
+                                        <option value="int">{{localize 'SPAO.int'}}</option>
+                                        <option value="car">{{localize 'SPAO.car'}}</option>
+                                        {{/select}}
+                                    </select>
+
+                                    <!-- Dropdown para escolher a proficiência -->
+                                    <select name="system.skills.{{key}}.prof" class="skill-proficiency">
+                                        {{#select (lookup skill 'prof')}}
+                                        <option value="untrained">{{localize 'SPAO.untrained'}}</option>
+                                        <option value="trained">{{localize 'SPAO.trained'}}</option>
+                                        <option value="expert">{{localize 'SPAO.expert'}}</option>
+                                        <option value="master">{{localize 'SPAO.master'}}</option>
+                                        {{/select}}
+                                    </select>
+                                </div>
+                            </div>
+                            {{/each}}
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- TABS: TALENTS -->
+
+            <!-- TABS: MAGIC -->
+
+            <!-- TABS: INVENTORY -->
+
+            <!-- TABS: NOTES -->
+            <div class="tab" data-group="primary" data-tab="notes">
+                {{ editor enrichedNotes target="system.notes" button=true owner=owner editable=editable
+                engine="prosemirror" collaborate=true }}
+            </div>
+        </section>
+    </div>
 </form>
