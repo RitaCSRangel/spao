@@ -1,0 +1,69 @@
+<div class="spao chat-card" style="border: 1px solid #333; border-radius: 5px; background: #f8f8f8; margin: 5px 0;">
+    <div style="padding: 8px; border-bottom: 1px solid #ddd;">
+        <strong>{{data.name}}</strong>
+    </div>
+
+    <div style="padding: 8px; border-bottom: 1px solid #ddd;">
+        <div style="margin: 5px 0;">
+            <div class="dice-roll">
+                <div class="dice-result">
+                    <div class="dice-formula">{{data.attackRoll.formula}}</div>
+                    <div class="dice-tooltip" style="display: none;">
+                        <section class="tooltip-part">
+                            <div class="dice">
+                                <header class="part-header flexrow">
+                                    <span class="part-formula">{{data.attackRoll.formula}}</span>
+                                </header>
+                                <ol class="dice-rolls">
+                                    <li class="roll die d20">{{data.rolledValue}}</li>
+                                </ol>
+                            </div>
+                        </section>
+                    </div>
+                    <h4 class="dice-total ${data.resultClass}">
+                        {{data.attackTotal}}
+                    </h4>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    {{#if isSuccess}}
+    <div style="padding: 8px; border-bottom: 1px solid #ddd;">
+        <div><strong>DANO</strong></div>
+        <div style="margin: 5px 0;">
+            <div class="dice-roll">
+                <div class="dice-result">
+                    <div class="dice-formula">{{data.damageRoll.formula}}</div>
+                    <div class="dice-tooltip" style="display: none;">
+                        <section class="tooltip-part">
+                            <div class="dice">
+                                <header class="part-header flexrow">
+                                    <span class="part-formula">{{data.damageRoll.formula}}</span>
+                                </header>
+                                <!-- <ol class="dice-rolls">
+                                    ${data.damageRoll.dice.map(die =>
+                                    die.results.map(result =>
+                                    `<li class="roll die d${data.die.faces}">${data.result.result}</li>`
+                                    ).join('')
+                                    ).join('')}
+                                </ol> -->
+                            </div>
+                        </section>
+                    </div>
+                    <h4 class="dice-total">{{data.damageRoll.total}} <span style="font-size: 0.8em;">{{data.damageType}}</span>
+                    </h4>
+                </div>
+            </div>
+        </div>
+    </div>
+    {{/if}}
+
+    <div style="padding: 8px; background: #eee; border-top: 1px solid #ddd;">
+        <div><small>
+                <strong>Range:</strong> Melee (5 ft)<br />
+                <strong>Tipo:</strong> {{data.damageType}}<br />
+                <strong>Alvo:</strong> {{data.targetActor?.name}} (CA: {{data.targetArmor}})
+            </small></div>
+    </div>
+</div>

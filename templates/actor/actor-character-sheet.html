@@ -1,0 +1,90 @@
+<form class="spao" autocomplete="off">
+    <div class="charater-sheet-grid">
+
+        <!-- RETRATO -->
+        <img class="portrait" src="{{data.img}}" data-edit="img" title="{{data.name}}" />
+
+        <!-- INFORMAÇÕES-->
+        <div class="character-sheet-section-name">
+            <!-- INFORMAÇÕES: NOME -->
+            <input class="name-input" type="text" name="name" value="{{data.name}}"
+                placeholder="{{ localize 'SPAO.Name' }}" />
+
+            <!-- INFORMAÇÕES: ANTECEDENTE -->
+            <input class="background-input" type="text" name="system.background" value="{{data.system.background}}"
+                placeholder="{{ localize 'SPAO.Background' }}" />
+
+            <!-- INFORMAÇÕES: VIDA, ARMADURA, MOVIMENTO E ATRIBUTOS-->
+            <div class="character-sheet-2col">
+                <div class="character-sheet-section-derived">
+
+                    <!-- VIDA -->
+                    <div class="resource-counter hp-counter">
+                        <label for="system.hp.value">{{ localize 'SPAO.HP' }}</label>
+                        <div class="resource-input-wrapper">
+                            <input type="text" name="system.hp.value" id="system.hp.value"
+                                value="{{data.system.hp.value}}" data-dtype="Number" />
+                            <span> / </span>
+                            <input type="text" name="system.hp.max" value="{{data.system.hp.max}}"
+                                data-dtype="Number" />
+                        </div>
+                    </div>
+
+                    <!-- ARMADURA -->
+                    <div class="resource-counter hp-counter">
+                        <label for="system.armor.value">{{ localize 'SPAO.Armor' }}</label>
+                        <div class="resource-input-wrapper">
+                            <input type="text" name="system.armor.value" id="system.armor.value"
+                                value="{{data.system.armor.value}}" data-dtype="Number" />
+                        </div>
+                    </div>
+
+                    <!-- MOVIMENTO -->
+                    <div class="resource-counter hp-counter">
+                        <label for="system.movement.value">{{ localize 'SPAO.Movement' }}</label>
+                        <div class="resource-input-wrapper">
+                            <input type="text" name="system.movement.value" id="system.movement.value"
+                                value="{{data.system.movement.value}}" data-dtype="Number" />
+                        </div>
+                    </div>
+                </div>
+
+                <!-- ATRIBUTOS -->
+                <div class="character-sheet-section-abilities">
+                    {{#each data.system.abilities as |ability key|}}
+                    <div class="resource-counter {{key}}-counter">
+                        <a class="resource-roll-attribute" for="system.abilities.{{key}}.value"
+                            data-roll="d20cs<=@abilities.{{key}}.value"
+                            data-label="{{localize (concat 'SPAO.' key)}}">{{localize (concat 'SPAO.' key)}}</a>
+                        <div class="resource-input-wrapper">
+                            <input type="text" name="system.abilities.{{key}}.value" value="{{ability.value}}"
+                                data-dtype="Number" />
+                        </div>
+                    </div>
+                    {{/each}}
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <!-- COMBATE -->
+    <div class="resource-quick-action">
+        <div class="resource-title"><label>{{ localize 'SPAO.Combat' }}</label></div>
+
+        <div class="resource-quick-action-item">
+            {{#each actor.items as |item|}}
+            {{#if (eq item.type "weapon")}}
+            <li class="item flexrow" data-item-id="{{item._id}}">
+                <div class='item-image'>
+                    <a class='attack-roll' data-roll-type='item'>
+                        <img src='{{item.img}}' title='{{item.name}}' />
+                    </a>
+                </div>
+            </li>
+            {{/if}}
+            {{/each}}
+        </div>
+    </div>
+    
+</form>

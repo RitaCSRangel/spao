@@ -1,0 +1,609 @@
+@font-face {
+    src: url("../fonts/Alegreya-Regular.woff2");
+    font-family: "Alegreya";
+}
+
+@font-face {
+    src: url("../fonts/Alegreya-Medium.woff2");
+    font-family: "Alegreya";
+    font-weight: 500;
+}
+
+@font-face {
+    src: url("../fonts/Alegreya-Bold.woff2");
+    font-family: "Alegreya";
+    font-weight: bold;
+}
+
+/******************************************************************************
+ * General style.                                                             * 
+ ******************************************************************************/
+
+.spao.sheet.actor,
+.spao.sheet.item {
+    min-height: 480px;
+    min-width: 480px;
+}
+
+.spao .window-content {
+    background-color: #f5f5f5;
+    background-image: none;
+}
+
+.spao .editor {
+    height: 100%;
+    min-height: 480px;
+}
+
+/******************************************************************************
+ * Character sheet grid.                                                      * 
+ ******************************************************************************/
+
+.charater-sheet-grid {
+    display: grid;
+    gap: 8px;
+    grid-template-columns: 140px 1fr 1fr;
+    grid-template-rows: 140px 112px 1fr;
+}
+
+.character-sheet-section-name {
+    grid-column-start: 2;
+    grid-column-end: 4;
+    display: flex;
+    column-gap: 8px;
+    row-gap: 2px;
+    grid-template-rows: 46px 24px 66px;
+    grid-template-columns: 1fr 1fr;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.character-sheet-section-derived {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    justify-content: center;
+}
+
+.character-sheet-section-buttons {
+    display: grid;
+    row-gap: 2px;
+    grid-template-rows: 36px 36px 36px;
+}
+
+.character-sheet-section-buttons button {
+    height: 36px;
+}
+
+.character-sheet-section-abilities {
+    display: grid;
+    row-gap: 2px;
+    grid-template-rows: 36px 36px 36px;
+}
+
+.character-sheet-section-others {
+    display: grid;
+    row-gap: 2px;
+    grid-template-rows: 36px 36px 36px;
+}
+
+.character-sheet-section-tabs {
+    grid-column-start: 1;
+    grid-column-end: 4;
+
+    display: grid;
+    grid-template-rows: 36px 1fr;
+}
+
+.character-sheet-2col {
+    display: flex;
+    justify-content: space-around;
+    width: max-content;
+    gap: 20px;
+}
+
+/******************************************************************************
+ * Container sheet grid.                                                      * 
+ ******************************************************************************/
+
+.container-sheet-grid {
+    display: grid;
+    gap: 8px;
+    grid-template-columns: 140px 1fr 1fr;
+    grid-template-rows: 140px 1fr;
+}
+
+/******************************************************************************
+ * Item sheet grid.                                                           * 
+ ******************************************************************************/
+
+.item-sheet-grid {
+    display: grid;
+    column-gap: 8px;
+    row-gap: 8px;
+    grid-template-columns: 140px 1fr 1fr;
+    grid-template-rows: 46px 36px 36px 36px 36px 36px 1fr;
+    height: 100%;
+}
+
+.item-sheet-section-portrait {
+    grid-column-start: 1;
+    grid-column-end: 2;
+    grid-row-start: 1;
+    grid-row-end: 7;
+}
+
+.item-sheet-section-name {
+    grid-column-start: 2;
+    grid-column-end: 4;
+    grid-row-start: 1;
+    grid-row-end: 2;
+}
+
+.item-sheet-section-tabs {
+    grid-column-start: 1;
+    grid-column-end: 4;
+    grid-row-start: 7;
+    grid-row-end: 7;
+
+    display: grid;
+    grid-template-rows: 36px 1fr;
+}
+
+.item-image {
+    width: 60px;
+}
+
+/******************************************************************************
+ * Portrait and name section.                                                 * 
+ ******************************************************************************/
+
+.portrait {
+    border: 2px solid black;
+    border-radius: 5px;
+    height: 230px;
+    width: 100%;
+    object-fit: contain;
+}
+
+.name-input {
+    grid-column-start: 1;
+    grid-column-end: 3;
+
+    background: black !important;
+    border: none !important;
+    color: #f5f5f5 !important;
+    font-family: "Alegreya", Times, "Times New Roman", Georgia, serif !important;
+    font-size: 23px !important;
+    font-variant: small-caps;
+    font-weight: 500;
+    padding: 8px !important;
+    height: 100% !important;
+}
+
+.background-input {
+    grid-column-start: 1;
+    grid-column-end: 3;
+
+    background: none !important;
+    border: none !important;
+    font-family: "Alegreya", Times, "Times New Roman", Georgia, serif !important;
+    font-size: 17px !important;
+    font-variant: small-caps;
+    height: 100% !important;
+}
+
+/******************************************************************************
+ * Generic resources counters style.                                          * 
+ ******************************************************************************/
+
+.resource-counter {
+    border: 2px solid black;
+    border-radius: 5px;
+    display: flex;
+    height: 36px;
+}
+
+.resource-roll-attribute {
+    display: flex;
+    width: 100px;
+    align-items: center;
+    justify-content: center;
+}
+
+.resource-counter a,
+.resource-counter label {
+    background-color: black;
+    color: #f5f5f5;
+    font-family: "Alegreya", Times, "Times New Roman", Georgia, serif;
+    font-size: 17px;
+    font-weight: 500;
+    line-height: 32px;
+    text-align: center;
+}
+
+.resource-title {
+    background-color: black;
+    color: #f5f5f5;
+    font-family: "Alegreya", Times, "Times New Roman", Georgia, serif;
+    font-size: 17px;
+    font-weight: 500;
+    line-height: 32px;
+    text-align: center;
+}
+
+.resource-input-wrapper {
+    display: flex;
+}
+
+.resource-input-wrapper input {
+    background: none !important;
+    border: none !important;
+    margin: auto;
+    text-align: center !important;
+    width: 100%;
+}
+
+.resource-input-wrapper input:focus {
+    box-shadow: none;
+}
+
+.resource-input-wrapper span {
+    margin: auto;
+    text-align: center;
+}
+
+.resource-quick-action {
+    display: flex;
+    gap: 5px;
+    flex-direction: column;
+}
+
+.resource-quick-action-item {
+    display: flex;
+    gap: 5px;
+}
+
+/******************************************************************************
+ * Stacked resources counters style.                                          * 
+ ******************************************************************************/
+
+.stacked-counter {
+    flex-direction: column;
+    height: auto;
+}
+
+.stacked-input-wrapper {
+    display: flex;
+    line-height: 19px;
+}
+
+.stacked-input-wrapper input {
+    background: none !important;
+    border: none !important;
+    margin: auto;
+    text-align: center !important;
+    height: 19px !important;
+    width: 100%;
+}
+
+.stacked-input-wrapper input:focus {
+    box-shadow: none;
+}
+
+.stacked-input-wrapper span {
+    margin: auto;
+    text-align: center;
+}
+
+/******************************************************************************
+ * Specific resources counters style.                                         * 
+ ******************************************************************************/
+
+.hp-counter label,
+.slots-counter label,
+.STR-counter a,
+.DEX-counter a,
+.WIL-counter a {
+    width: 50%;
+}
+
+.hp-counter .resource-input-wrapper,
+.slots-counter .resource-input-wrapper,
+.STR-counter .resource-input-wrapper,
+.DEX-counter .resource-input-wrapper,
+.WIL-counter .resource-input-wrapper {
+    width: 50%;
+}
+
+.long-counter label {
+    width: 70%;
+}
+
+.long-counter .resource-input-wrapper {
+    width: 30%;
+}
+
+.middle-counter label {
+    width: 50%;
+}
+
+.middle-counter .resource-input-wrapper {
+    width: 50%;
+}
+
+.short-counter label {
+    width: 45%;
+}
+
+.short-counter .resource-input-wrapper {
+    width: 55%;
+}
+
+.short-resource-label {
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
+    width: 45%;
+    padding-left: 4px;
+    padding-right: 4px;
+}
+
+.deprived-counter,
+.slots-counter {
+    align-self: end;
+}
+
+.STR-counter {
+    border-radius: 5px 5px 0 0;
+}
+
+.DEX-counter {
+    border-radius: 0;
+}
+
+.WIL-counter {
+    border-radius: 0 0 5px 5px;
+}
+
+/******************************************************************************
+ * Tabs.                                                                      * 
+ ******************************************************************************/
+
+.spao .tabs {
+    display: flex;
+}
+
+.spao .tabs a {
+    border-bottom: 2px solid black;
+    border-top: 2px solid black;
+    flex-grow: 1;
+    font-family: "Alegreya", Times, "Times New Roman", Georgia, serif;
+    font-size: 17px;
+    font-weight: bold;
+    line-height: 32px;
+}
+
+.spao .tab {
+    height: 100%;
+}
+
+/******************************************************************************
+ * Items list.                                                                * 
+ ******************************************************************************/
+
+.spao-items-list-header {
+    border-bottom: 1px solid #b5b3a4;
+    display: flex;
+    font-family: "Alegreya", Times, "Times New Roman", Georgia, serif !important;
+    font-weight: bold;
+    justify-content: space-between;
+    line-height: 36px;
+    height: 36px;
+}
+
+.spao-items-list-header .end {
+    margin-left: auto;
+}
+
+.spao-items-list-row {
+    border-bottom: 1px solid #b5b3a4;
+}
+
+.spao-items-list-row:hover {
+    background-color: #eee;
+}
+
+.spao-items-list-row:hover .spao-item-controls {
+    opacity: 1.0;
+}
+
+.spao-items-list-row-header {
+    display: flex;
+    justify-content: space-between;
+}
+
+.spao-item-name-and-tags {
+    display: flex;
+    line-height: 26px;
+    height: 26px;
+    gap: 4px;
+}
+
+.spao-item-tag {
+    align-self: center;
+    background: rgba(0, 0, 0, 0.05);
+    border: 1px solid #999;
+    border-radius: 3px;
+    display: inline-block;
+    font-size: 10px;
+    line-height: 16px;
+    padding: 0 3px;
+    height: 18px;
+}
+
+.spao-item-uses i {
+    font-size: 10px;
+}
+
+.spao-item-controls {
+    display: flex;
+    height: 26px;
+    opacity: 0.7;
+    gap: 4px;
+}
+
+.spao-item-controls a {
+    text-align: center;
+    width: 18px;
+}
+
+.spao-item-name-and-tags .fas,
+.spao-item-controls .fas {
+    line-height: 26px;
+}
+
+.item-toggle-equipped {
+    color: var(--color-text-dark-inactive);
+}
+
+.item-toggle-equipped.equipped {
+    color: var(--color-text-dark-primary);
+}
+
+.crit-dmg.long-counter label {
+    width: 40%;
+}
+
+.crit-dmg.long-counter .resource-input-wrapper {
+    width: 60%;
+}
+
+.weapon.item-sheet-grid {
+    grid-template-rows: 46px 36px 36px 36px 36px 1fr;
+}
+
+.weapon.item-sheet-grid .item-sheet-section-tabs {
+    grid-row-start: 6;
+    grid-row-end: 6;
+}
+
+
+.armor.item-sheet-grid,
+.object.item-sheet-grid {
+    grid-template-rows: 46px 36px 36px 36px 36px 1fr;
+}
+
+.spellbook.item-sheet-grid {
+    grid-template-rows: 46px 36px 46px 1fr;
+}
+
+.armor.item-sheet-grid .item-sheet-section-tabs,
+.object.item-sheet-grid .item-sheet-section-tabs {
+    grid-row-start: 6;
+    grid-row-end: 6;
+}
+
+.spellbook.item-sheet-grid .item-sheet-section-tabs {
+    grid-row-start: 4;
+    grid-row-end: 4;
+}
+
+.small-resource-label {
+    max-width: fit-content;
+    padding-left: 0.8rem;
+    padding-right: 0.8rem;
+}
+
+.tiny-resource-label {
+    max-width: fit-content;
+    padding-left: 0.5rem;
+    padding-right: 0.5rem;
+}
+
+.container.item-sheet-grid {
+    grid-template-rows: 46px 36px 46px 1fr;
+}
+
+.container.item-sheet-grid .item-sheet-section-tabs {
+    grid-row-start: 4;
+    grid-row-end: 4;
+}
+
+.weapon-desc-divider {
+    font-style: italic;
+}
+
+.strict-size-button {
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
+}
+
+.overburdened-gold {
+    border-color: var(--color-level-error-border);
+}
+
+.description {
+    display: flex;
+    flex-direction: column;
+}
+
+.features {
+    max-height: 150px;
+    overflow: auto;
+    margin-bottom: 16px;
+}
+
+/******************************************************************************
+ * Chat message.                                                                *
+ ******************************************************************************/
+
+.chat-message .flavor-dice-roll {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+}
+
+.chat-message .icon-action {
+    margin-left: auto;
+}
+
+.grey-comment {
+    font-size: smaller;
+    color: grey;
+    font-style: italic;
+}
+
+.indent {
+    margin-left: 16px;
+}
+
+.compact-check {
+    text-align: end;
+    margin-right: 8px;
+    line-height: 1em !important;
+}
+
+.hidden {
+    display: none;
+}
+
+.spao.chat-card .dice-roll .dice-result .dice-total.success {
+    color: #00aa00;
+    font-weight: bold;
+}
+
+.spao.chat-card .dice-roll .dice-result .dice-total.failure {
+    color: #aa0000;
+    font-weight: bold;
+}
+
+.spao.chat-card {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    font-size: 13px;
+}
+
+.spao.chat-card strong {
+    color: #333;
+}

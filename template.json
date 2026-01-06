@@ -1,0 +1,116 @@
+{
+  "Actor": {
+    "types": [
+      "character",
+      "npc"
+    ],
+    "templates": {
+      "actorBase": {
+        "hp": {
+          "value": 6,
+          "max": 6
+        },
+        "armor": {
+          "value": 6
+        },
+        "movement": {
+          "value": 20
+        },
+        "abilities": {
+          "for": {
+            "value": 10
+          },
+          "des": {
+            "value": 10
+          },
+          "int": {
+            "value": 10
+          },
+          "car": {
+            "value": 10
+          }
+        }
+      }
+    },
+    "character": {
+      "templates": [
+        "base",
+        "actorBase"
+      ],
+      "background": "",
+      "biography": "",
+      "features": []
+    },
+    "npc": {
+      "templates": [
+        "base",
+        "actorBase"
+      ],
+      "description": "",
+      "features": []
+    }
+  },
+  "Item": {
+    "types": [
+      "item",
+      "weapon",
+      "armor",
+      "spellbook",
+      "object"
+    ],
+    "templates": {
+      "universal": {
+        "description": "",
+        "equipped": false,
+        "cost": 0,
+        "quantity": 1
+      },
+      "withDamage": {
+        "damageDice": ""
+      },
+      "consumable": {
+        "uses": {
+          "value": 0,
+          "max": 0
+        }
+      }
+    },
+    "item": {
+      "templates": [
+        "base",
+        "universal",
+        "withDamage",
+        "consumable"
+      ]
+    },
+    "weapon": {
+      "templates": [
+        "base",
+        "universal",
+        "withDamage",
+        "consumable"
+      ]
+    },
+    "armor": {
+      "templates": [
+        "base",
+        "universal",
+        "consumable"
+      ],
+      "armor": 1
+    },
+    "spellbook": {
+      "templates": [
+        "base",
+        "universal"
+      ]
+    },
+    "object": {
+      "templates": [
+        "base",
+        "universal",
+        "consumable"
+      ]
+    }
+  }
+}

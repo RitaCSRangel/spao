@@ -1,0 +1,44 @@
+{
+    "id": "spao",
+    "title": "Sistema para Aventureiros Ociosos",
+    "description": "Sistema para Aventureiros Ociosos para FoundryVTT",
+    "version": "0.1",
+    "compatibility": {
+        "minimum": "13",
+        "verified": "13.346"
+    },
+    "license": "LICENSE.txt",
+    "url": "",
+    "manifest": "",
+    "download": "",
+    "authors": [],
+    "esmodules": [
+        "module/spao.js"
+    ],
+    "styles": [
+        "css/spao.css"
+    ],
+    "packs": [
+    ],
+    "packFolders": [
+    ],
+    "scripts": [],
+    "languages": [
+        {
+            "lang": "en",
+            "name": "English",
+            "path": "lang/en.json"
+        },
+        {
+            "lang": "pt-BR",
+            "name": "Português brasileiro",
+            "path": "lang/pt-BR.json"
+        }
+    ],
+    "grid": {
+        "distance": 5,
+        "units": "ft"
+    },
+    "primaryTokenAttribute": "abilities.STR",
+    "secondaryTokenAttribute": "hp"
+}
