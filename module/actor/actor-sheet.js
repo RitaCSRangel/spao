@@ -373,16 +373,36 @@ export class SpaoActorSheet extends ActorSheet {
     if (item) {
       // Obter os valores da arma
       const itemAttribute = item.system.atrib;
-      const attributeValue = this.actor.abilities[itemAttribute]?.value || 0;
-      const itemProficiency = item.system.prof;
+      const attributeValue = this.actor.system.abilities[itemAttribute]?.value || 0;
       const itemDamageDiceType = item.system.dice.type;
       const itemDamageDiceQuantity = item.system.dice.quantity;
 
+      // Calcular bônus de proficiência
+      let itemProficiency = 0;
+      switch (item.system.prof) {
+        case 'untrained':
+          itemProficiency = -2;
+          break;
+        case 'trained':
+          itemProficiency = 2;
+          break;
+        case 'expert':
+          itemProficiency = 4;
+          break;
+        case 'master':
+          itemProficiency = 6;
+          break;
+        default:
+          itemProficiency = 0;
+      }
+
       // Rolagem de Ataque
-      let attackFormula = "1d20 + " + attributeValue + itemProficiency;
-      let attackRoll = new Roll(attackFormula, {
-        for: this.actor.system.abilities.for.value
-      });
+      let attackFormula = "1d20 + @mod";
+      let attackRoll = new Roll(attackFormula,
+        {
+          mod: attributeValue + itemProficiency
+        }
+      );
       await attackRoll.evaluate();
 
       // Determinar o token alvo
@@ -409,27 +429,33 @@ export class SpaoActorSheet extends ActorSheet {
       let damageRoll = null;
       let damageRollFormula = itemDamageDiceQuantity + itemDamageDiceType;
 
-      if (isSuccess && this.actor.system.damageDice) {
+      if (isSuccess) {
         damageRoll = new Roll(damageRollFormula, {});
         await damageRoll.evaluate();
       }
 
       // Determinar tipo de dano (do item ou padrão)
-      const damageType = this.item?.system?.damage?.type || "Nenhum";
+      const damageType = item?.system?.damage?.type || "Tipo de Dano";
 
       // Criar conteúdo HTML do template
       const flavor = `${this.actor.name} <br/><small>Para: ${targetActor?.name || "Ninguém"}</small>`;
 
+      // Preparar dados para o template
       let data = {
-        name: this.item?.name || "Ataque de Arma",
+        name: item.name || "Ataque de Arma",
         attackRoll: attackRoll,
         rolledValue: rolledValue,
         attackTotal: attackTotal,
         isSuccess: isSuccess,
         damageRoll: damageRoll,
         damageType: damageType,
-        targetActor: targetActor
-      }
+        targetActor: targetActor,
+        targetArmor: targetArmor,
+        itemAttribute: itemAttribute,
+        attributeValue: attributeValue,
+        itemProficiency: itemProficiency,
+        resultClass: resultClass
+      };
 
       const attackContent = await renderTemplate(
         "systems/spao/templates/chat/attack.html",
@@ -437,7 +463,7 @@ export class SpaoActorSheet extends ActorSheet {
       );
 
       // Enviar mensagem para o chat
-      await ChatMessage.create({
+      const message = await ChatMessage.create({
         user: game.user.id,
         speaker: ChatMessage.getSpeaker({ actor: this.actor }),
         flavor: flavor,
@@ -446,16 +472,24 @@ export class SpaoActorSheet extends ActorSheet {
         roll: attackRoll
       });
 
-      // Também enviar rolagem de dano separadamente se necessário
-      if (damageRoll) {
-        await damageRoll.toMessage({
-          speaker: ChatMessage.getSpeaker({ actor: this.actor }),
-          flavor: `Dano - ${this.actor.name}`,
-          rollMode: game.settings.get("core", "rollMode")
-        }, {
-          rollMode: game.settings.get("core", "rollMode")
-        });
-      }
+      // Adicionar event listener para a mensagem criada
+      Hooks.once('renderChatMessage', (messageDoc, html, messageData) => {
+        if (messageDoc.id === message.id) {
+          // Adicionar evento de clique para expandir/recolher
+          html.find('.expandable').click(function () {
+            const targetId = $(this).data('target');
+            const targetElement = html.find('#' + targetId);
+
+            if (targetElement.is(':visible')) {
+              targetElement.slideUp();
+              $(this).removeClass('expanded');
+            } else {
+              targetElement.slideDown();
+              $(this).addClass('expanded');
+            }
+          });
+        }
+      });
     }
   }
 

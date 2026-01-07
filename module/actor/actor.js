@@ -117,7 +117,7 @@ export class SpaoActor extends Actor {
       .map((item) => parseInt(item.system.armor ?? 0, 10))
       .reduce((a, b) => a + b, 0);
 
-    const armor = this.system.abilities.des.value + armorItems;
+    const armor = 10 + this.system.abilities.des.value + armorItems;
     return Math.round(armor);
   }
 
