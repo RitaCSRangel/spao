@@ -51,7 +51,7 @@
             {{/each}}
 
             <!-- Mensagem quando não há magias -->
-            {{#unless (hasItem actor.items)}}
+            {{#unless (hasMagic actor.items)}}
             <div class="no-magic-message">
                 <p>{{ localize 'SPAO.NoMagic' }}</p>
             </div>

@@ -51,7 +51,7 @@
         {{/each}}
 
         <!-- Mensagem quando não há talentos -->
-        {{#unless (hasItem actor.items)}}
+        {{#unless (hasTalent actor.items)}}
         <div class="no-talents-message">
             <p>{{ localize 'SPAO.NoTalents' }}</p>
         </div>

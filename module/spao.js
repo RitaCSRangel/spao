@@ -76,7 +76,17 @@ Handlebars.registerHelper('times', function(n, block) {
 // Helper para verificar se há talentos
 Handlebars.registerHelper('hasItem', function(items) {
     if (!items) return false;
+    return items.some(item => item.type === "item");
+});
+
+Handlebars.registerHelper('hasTalent', function(items) {
+    if (!items) return false;
     return items.some(item => item.type === "talento");
+});
+
+Handlebars.registerHelper('hasMagic', function(items) {
+    if (!items) return false;
+    return items.some(item => item.type === "magia");
 });
 
 // Helper para comparação maior que
