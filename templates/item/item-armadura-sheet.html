@@ -1,5 +1,5 @@
 <form class="spao" autocomplete="off">
-    <div class="item-sheet-grid item">
+    <div class="item-sheet-grid armadura">
         <div class="item-sheet-grid-sections">
             <!-- Portrait -->
             <div class="item-sheet-section-portrait">
@@ -15,37 +15,30 @@
                 </div>
 
                 <div class="item-sheet-section-stats">
+                    <!-- Equipped -->
+                    <div class="item-resource-counter short-counter">
+                        <label class="item-sheet-resource-label" for="system.equipped">{{ localize 'SPAO.Equipped' }}</label>
+                        <div class="resource-input-wrapper">
+                            <input type="checkbox" {{checked data.system.equipped}} name="system.equipped"
+                                id="system.equipped" value="{{data.system.equipped}}" data-dtype="Boolean" />
+                        </div>
+                    </div>
+
                     <!-- Cost -->
                     <div class="item-resource-counter short-counter">
                         <label class="item-sheet-resource-label" for="system.cost">{{ localize 'SPAO.Cost' }}</label>
                         <div class="resource-input-wrapper">
-                            <input type="text" name="system.cost" id="system.cost" value="{{data.system.cost}}"
-                                data-dtype="Number" />
+                            <input type="text" name="system.cost" id="system.cost"
+                                value="{{data.system.cost}}" data-dtype="Number" />
                         </div>
                     </div>
 
-                    <!-- Quantity -->
+                    <!-- Armor -->
                     <div class="item-resource-counter short-counter">
-                        <label class="item-sheet-resource-label" for="system.quantity">{{ localize 'SPAO.Quantity'
-                            }}</label>
+                        <label class="item-sheet-resource-label" for="system.armor">{{ localize 'SPAO.Armor' }}</label>
                         <div class="resource-input-wrapper">
-                            <input type="text" name="system.quantity" id="system.quantity"
-                                value="{{data.system.quantity}}" data-dtype="Number" />
-                        </div>
-                    </div>
-
-                    <div class="item-sheet-resource-dropdowns">
-                        <!-- Uses Current -->
-                        <div class="item-resource-counter short-counter">
-                            <label class="item-sheet-resource-label" for="system.uses.value">{{ localize 'SPAO.Uses'
-                                }}</label>
-                            <div class="resource-input-wrapper">
-                                <input type="text" name="system.uses.value" id="system.uses.value"
-                                    value="{{data.system.uses.value}}" data-dtype="Number" />
-                                <span> / </span>
-                                <input type="text" name="system.uses.max" id="system.uses.max"
-                                    value="{{data.system.uses.max}}" data-dtype="Number" />
-                            </div>
+                            <input type="text" name="system.armor" id="system.armor"
+                                value="{{data.system.armor}}" data-dtype="Number" />
                         </div>
                     </div>
                 </div>

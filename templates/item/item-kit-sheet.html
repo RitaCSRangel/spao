@@ -1,0 +1,31 @@
+<form class="spao" autocomplete="off">
+    <div class="item-sheet-grid kit">
+        <div class="item-sheet-grid-sections">
+            <!-- Portrait -->
+            <div class="item-sheet-section-portrait">
+                <img class="portrait" src="{{data.img}}" data-edit="img" title="{{data.name}}" />
+            </div>
+
+            <!-- INFORMATION -->
+            <div class="item-sheet-section-info">
+                <!-- Name -->
+                <div class="item-sheet-section-name">
+                    <input class="item-sheet-name" type="text" name="name" value="{{data.name}}"
+                        placeholder="{{ localize 'SPAO.Name' }}" />
+                </div>
+            </div>
+        </div>
+
+        <div class="item-sheet-section-tabs">
+            <nav class="tabs" data-group="primary">
+                <a class="item" data-group="primary" data-tab="description">{{ localize 'SPAO.Description' }}</a>
+            </nav>
+            <section class="content">
+                <div class="tab" data-group="primary" data-tab="description">
+                    {{ editor enrichedDescription target="system.description" button=true owner=owner editable=editable
+                    engine="prosemirror" collaborate=true }}
+                </div>
+            </section>
+        </div>
+    </div>
+</form>

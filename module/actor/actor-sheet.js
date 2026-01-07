@@ -46,7 +46,7 @@ export class SpaoActorSheet extends ActorSheet {
     context.config = CONFIG.SPAO;
 
     // Prepare character data and items.
-    if (actorData.type == "character") {
+    if (actorData.type == "personagem") {
       this._prepareItems(context);
     }
 
@@ -130,11 +130,11 @@ export class SpaoActorSheet extends ActorSheet {
         shields.push(i);
       }
       // CUSTOM: Append to Armor
-      else if (i.type === "armor") {
+      else if (i.type === "armadura") {
         armors.push(i);
       }
       // CUSTOM: Append to Weapon
-      else if (i.type === "weapon") {
+      else if (i.type === "arma") {
         weapons.push(i);
       }
       // CUSTOM: Append to Consumable
@@ -177,8 +177,10 @@ export class SpaoActorSheet extends ActorSheet {
     // Everything below here is only needed if the sheet is editable
     if (!this.isEditable) return;
 
-    html.find(".item-create").on("click", (ev) => this._onItemCreate.bind(ev, this)); // Add Inventory Item
+    html.find(".item-create").click(this._onItemCreate.bind(this)); // Add Inventory Item
     html.find(".item-delete").on("click", (ev) => this._onItemDelete(ev)); // Delete Inventory Item
+    html.find(".item-edit").on("click", (ev) => this._onItemEdit(ev)); // Delete Inventory Item
+
     html.find(".effect-control").on("click", (ev) => this._onEffectControl(ev)); // Active Effect management
     html.find(".rollable").on("click", this._onRoll.bind(this)); // Handle clickable rolls
 
@@ -196,44 +198,32 @@ export class SpaoActorSheet extends ActorSheet {
     ------------------------------------------------- */
 
     html.find(".attack-roll").on("click", (ev) => this.RolarAtaque(ev));
+    html.find('.attribute-roll').click(this.RolarSave.bind(this));
     html.find('.skill-roll').click(this.RolarSkill.bind(this));
-
-    // html.find(".resistance-values").on("click", (ev) => this.AbrirDialogResistencia(ev));
-    // html.find(".item-equip").on("click", (ev) => this.EquiparItem(ev));
-    // html.find(".debilitated").on("click", (ev) => this.MarcarFerimento(ev));
-    // html.find(".ability-roll").on("click", (ev) => this.RolarAtributo(ev));
-    // html.find(".defense-roll").on("click", (ev) => this.RolarDefesa(ev));
-    // html.find(".spao-input").on("change", (ev) => this.LimparAtributoSelecionado(ev));
-    // html.find(".willpowercheckbox-expended").on("click", (ev) => this.GastarWillpower(ev, false));
-    // html.find(".willpowercheckbox-available").on("click", (ev) => this.GastarWillpower(ev, true));
-    // html.find(".nd-advantage").on("click", (ev) => AtualizarVantagemMonstro(true, this.actor));
-    // html.find(".nd-disvantage").on("click", (ev) => AtualizarDesvantagemMonstro(true, this.actor));
+    html.find(".item-toggle-equipped").on("click", (ev) => this.EquiparItem(ev));
 
   }
 
   async _onItemCreate(event) {
-    // Ao fazer outro clique na ficha certifique-se de limpar o atributo selecionado primeiro
-    this.LimparAtributoSelecionado();
-
     event.preventDefault();
-    const header = event.currentTarget;
-    // Get the type of item to create.
-    const type = header.dataset.type;
-    // Grab any data associated with this control.
-    const data = duplicate(header.dataset);
-    // Initialize a default name.
-    const name = `New ${type.capitalize()}`;
-    // Prepare the item object.
-    const itemData = {
-      name: name,
-      type: type,
-      system: data,
-    };
-    // Remove the type from the dataset since it's in the itemData.type prop.
-    delete itemData.system['type'];
 
-    // Finally, create the item!
-    return await Item.create(itemData, { parent: this.actor });
+    // Tenta usar template do sistema, se existir
+    const template = game.system.template?.Item;
+
+    const itemData = {
+      name: "Novo Item",
+      type: "item",
+      img: "icons/svg/item-bag.svg",
+      system: foundry.utils.mergeObject(
+        template?.system || {},
+        {
+          description: "",
+          quantity: 1
+        }
+      )
+    };
+
+    await this.actor.createEmbeddedDocuments("Item", [itemData]);
   }
 
   // Custom Predefined Function: Item Delete
@@ -242,11 +232,6 @@ export class SpaoActorSheet extends ActorSheet {
     const li = $(ev.currentTarget).parents(".item");
     const item = this.actor.items.get(li.data("itemId"));
     item.delete();
-    li.slideUp(200, () => this.render(false));
-
-    if (item.type == "feature") {
-      RemoveTalentCharacteristics(this.actor, item);
-    }
   }
 
   // Custom Predefined Function: Activate Effect
@@ -354,6 +339,47 @@ export class SpaoActorSheet extends ActorSheet {
 
     const flavor = await renderTemplate(
       "systems/spao/templates/chat/skill.html",
+      data
+    );
+
+    // Enviar para o chat
+    roll.toMessage({
+      speaker: ChatMessage.getSpeaker({ actor: this.actor }),
+      flavor: flavor
+    });
+  }
+
+  async RolarSave(event) {
+    event.preventDefault();
+    const element = event.currentTarget;
+    const attributeKey = element.dataset.abilities;
+
+    // Obter dados atuais do sistema
+    const actorData = this.actor.system;
+    const attribute = actorData.abilities[attributeKey];
+
+    if (!attribute) return;
+
+    // Obter valor do atributo
+    const attributeValue = attribute.value;
+
+    // Calcular total
+    const totalBonus = attributeValue;
+    const formula = `1d20 + ${totalBonus}`;
+
+    // Criar e rolar
+    const roll = new Roll(formula);
+    await roll.roll({ async: true });
+
+    // Mensagem formatada
+    const name = "Save de " + game.i18n.localize(`SPAO.${attributeKey}`);
+    let data = {
+      name: name,
+      attributeValue: attributeValue
+    }
+
+    const flavor = await renderTemplate(
+      "systems/spao/templates/chat/save.html",
       data
     );
 
@@ -490,6 +516,17 @@ export class SpaoActorSheet extends ActorSheet {
           });
         }
       });
+    }
+  }
+
+  async EquiparItem(ev) {
+    // Obter o item associado ao botão clicado
+    const li = $(ev.currentTarget).parents(".item");
+    const item = this.actor.items.get(li.data("itemId"));
+
+    if (item) {
+      const isEquipped = item.system.equipped;
+      await item.update({ 'system.equipped': !isEquipped });
     }
   }
 

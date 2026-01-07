@@ -26,8 +26,8 @@
                             <input type="text" name="system.hp.value" id="system.hp.value"
                                 value="{{data.system.hp.value}}" data-dtype="Number" />
                             <span> / </span>
-                            <input type="text" name="system.hp.max" value="{{data.system.hp.max}}"
-                                data-dtype="Number" />
+                            <input type="text" name="system.hp.max" value="{{data.system.hp.max}}" data-dtype="Number"
+                                readonly />
                         </div>
                     </div>
 
@@ -48,7 +48,7 @@
                                 value="{{data.system.focus.value}}" data-dtype="Number" />
                             <span> / </span>
                             <input type="text" name="system.focus.max" value="{{data.system.focus.max}}"
-                                data-dtype="Number" />
+                                data-dtype="Number" readonly />
                         </div>
                     </div>
 
@@ -66,7 +66,7 @@
                 <div class="character-sheet-section-abilities">
                     {{#each data.system.abilities as |ability key|}}
                     <div class="resource-counter hp-counter">
-                        <label for="system.abilities.{{key}}.value">{{localize (concat 'SPAO.' key)}}</label>
+                        <label><a class="attribute-roll" data-abilities="{{key}}" for="system.abilities.{{key}}.value">{{localize (concat 'SPAO.' key)}}</a></label>
                         <div class="resource-input-wrapper">
                             <input type="text" name="system.abilities.{{key}}.value" value="{{ability.value}}"
                                 data-dtype="Number" />
@@ -85,7 +85,8 @@
 
         <div class="resource-quick-action-item">
             {{#each actor.items as |item|}}
-            {{#if (eq item.type "weapon")}}
+            {{#if (eq item.type "arma")}}
+            {{#if (eq item.system.equipped true)}}
             <li class="item flexrow" data-item-id="{{item._id}}">
                 <div class='item-image'>
                     <a class='attack-roll' data-roll-type='item'>
@@ -93,6 +94,7 @@
                     </a>
                 </div>
             </li>
+            {{/if}}
             {{/if}}
             {{/each}}
         </div>
@@ -115,57 +117,23 @@
 
             <!-- TABS: SKILLS -->
             <div class="tab" data-group="primary" data-tab="skills">
-                <div class="skills-section">
-                    <div class="skills-grid">
-                        <div class="character-sheet-section-abilities">
-                            {{#each data.system.skills as |skill key|}}
-                            <div class="skill-row">
-
-                                <div class="skill-elements">
-                                    <a class="skill-roll" data-skill="{{key}}">{{localize (concat 'SPAO.' key)}}</a>
-                                </div>
-
-                                <div class="skill-elements">
-
-                                    <!-- Campo para mostrar o bônus calculado (somente leitura) -->
-                                    <div class="skill-bonus">
-                                        <input type="text" name="system.skills.{{key}}.value" value="{{skill.value}}"
-                                            data-dtype="Number" />
-                                    </div>
-
-                                    <!-- Dropdown para escolher o atributo -->
-                                    <select name="system.skills.{{key}}.atrib" class="skill-attribute">
-                                        {{#select (lookup skill 'atrib')}}
-                                        <option value="">Atributo</option>
-                                        <option value="for">{{localize 'SPAO.for'}}</option>
-                                        <option value="des">{{localize 'SPAO.des'}}</option>
-                                        <option value="int">{{localize 'SPAO.int'}}</option>
-                                        <option value="car">{{localize 'SPAO.car'}}</option>
-                                        {{/select}}
-                                    </select>
-
-                                    <!-- Dropdown para escolher a proficiência -->
-                                    <select name="system.skills.{{key}}.prof" class="skill-proficiency">
-                                        {{#select (lookup skill 'prof')}}
-                                        <option value="untrained">{{localize 'SPAO.untrained'}}</option>
-                                        <option value="trained">{{localize 'SPAO.trained'}}</option>
-                                        <option value="expert">{{localize 'SPAO.expert'}}</option>
-                                        <option value="master">{{localize 'SPAO.master'}}</option>
-                                        {{/select}}
-                                    </select>
-                                </div>
-                            </div>
-                            {{/each}}
-                        </div>
-                    </div>
-                </div>
+                {{> "systems/spao/templates/actor/parts/actor-skills.html"}}
             </div>
 
             <!-- TABS: TALENTS -->
+            <div class="tab" data-group="primary" data-tab="talents">
+                {{> "systems/spao/templates/actor/parts/actor-talents.html"}}
+            </div>
 
             <!-- TABS: MAGIC -->
+            <div class="tab" data-group="primary" data-tab="magic">
+                {{> "systems/spao/templates/actor/parts/actor-magic.html"}}
+            </div>
 
             <!-- TABS: INVENTORY -->
+            <div class="tab" data-group="primary" data-tab="inventory">
+                {{> "systems/spao/templates/actor/parts/actor-inventory.html"}}
+            </div>
 
             <!-- TABS: NOTES -->
             <div class="tab" data-group="primary" data-tab="notes">

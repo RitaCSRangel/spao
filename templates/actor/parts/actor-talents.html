@@ -1,0 +1,60 @@
+<div class="talents-section">
+    <!-- Cabeçalho dos talentos -->
+    <div class="spao-items-list-header talents-header">
+        <div class="talents-header-name">{{ localize 'SPAO.TalentName' }}</div>
+    </div>
+
+    <!-- Lista de talentos -->
+    <div class="talents-items-list">
+        {{#each actor.items as |item id|}}
+        {{#if (eq item.type "talento")}}
+        <div class="item spao-items-list-row talent-item-row" data-item-id="{{item._id}}">
+            <div class="spao-items-list-row-header talent-item-header">
+                <!-- Imagem do talento -->
+                <div class="talent-item-image">
+                    <img src="{{item.img}}" title="{{item.name}}" />
+                </div>
+
+                <!-- Nome do talento -->
+                <div class="spao-item-name-and-tags talent-item-name">
+                    <a class="talent-name">{{item.name}}</a>
+                </div>
+
+                <!-- Display do Tier - alinhado com a coluna -->
+                <div class="talent-tier-display">
+                    <div class="tier-value">
+                        <span class="current-tier">{{item.system.currentTier}}</span>
+                        <span class="tier-separator">/</span>
+                        <span class="max-tier">{{item.system.maxTier}}</span>
+                    </div>
+                </div>
+
+                <!-- Botões de ação -->
+                <div class="spao-item-controls talent-item-controls">
+                    <a class="item-edit" title="{{ localize 'SPAO.Edit' }}">
+                        <i class="fas fa-edit"></i>
+                    </a>
+                    <a class="item-delete" title="{{ localize 'SPAO.Delete' }}">
+                        <i class="fas fa-trash"></i>
+                    </a>
+                </div>
+            </div>
+
+            <!-- Descrição do talento (opcional, pode ser expandida) -->
+            {{#if item.system.description}}
+            <div class="talent-description">
+                <p>{{item.system.description}}</p>
+            </div>
+            {{/if}}
+        </div>
+        {{/if}}
+        {{/each}}
+
+        <!-- Mensagem quando não há talentos -->
+        {{#unless (hasItem actor.items)}}
+        <div class="no-talents-message">
+            <p>{{ localize 'SPAO.NoTalents' }}</p>
+        </div>
+        {{/unless}}
+    </div>
+</div>

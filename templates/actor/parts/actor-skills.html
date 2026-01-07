@@ -1,0 +1,44 @@
+<div class="skills-section">
+    <div class="skills-grid">
+        <div class="character-sheet-section-abilities">
+            {{#each data.system.skills as |skill key|}}
+            <div class="skill-row">
+
+                <div class="skill-elements">
+                    <a class="skill-roll" data-skill="{{key}}">{{localize (concat 'SPAO.' key)}}</a>
+                </div>
+
+                <div class="skill-elements">
+
+                    <!-- Campo para mostrar o bônus calculado (somente leitura) -->
+                    <div class="skill-bonus">
+                        <input type="text" name="system.skills.{{key}}.value" value="{{skill.value}}"
+                            data-dtype="Number" />
+                    </div>
+
+                    <!-- Dropdown para escolher o atributo -->
+                    <select name="system.skills.{{key}}.atrib" class="skill-attribute">
+                        {{#select (lookup skill 'atrib')}}
+                        <option value="">Atributo</option>
+                        <option value="for">{{localize 'SPAO.for'}}</option>
+                        <option value="des">{{localize 'SPAO.des'}}</option>
+                        <option value="int">{{localize 'SPAO.int'}}</option>
+                        <option value="car">{{localize 'SPAO.car'}}</option>
+                        {{/select}}
+                    </select>
+
+                    <!-- Dropdown para escolher a proficiência -->
+                    <select name="system.skills.{{key}}.prof" class="skill-proficiency">
+                        {{#select (lookup skill 'prof')}}
+                        <option value="untrained">{{localize 'SPAO.untrained'}}</option>
+                        <option value="trained">{{localize 'SPAO.trained'}}</option>
+                        <option value="expert">{{localize 'SPAO.expert'}}</option>
+                        <option value="master">{{localize 'SPAO.master'}}</option>
+                        {{/select}}
+                    </select>
+                </div>
+            </div>
+            {{/each}}
+        </div>
+    </div>
+</div>

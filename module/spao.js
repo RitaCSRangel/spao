@@ -10,6 +10,7 @@ import { SpaoItemSheet } from './item/item-sheet.js';
 import { SPAO } from './helpers/config.js';
 import { rollItemMacro } from "./helpers/macros.js";
 import { registerSettings } from "./helpers/settings.js";
+import { preloadHandlebarsTemplates } from "./helpers/templates.mjs";
 
 /* -------------------------------------------- */
 /*  Init Hook                                   */
@@ -42,8 +43,11 @@ Hooks.once('init', function () {
   foundry.documents.collections.Items.unregisterSheet("core", foundry.appv1.sheets.ItemSheet);
   foundry.documents.collections.Items.registerSheet("spao", SpaoItemSheet, { makeDefault: true });
 
-  //configureHandleBar();
+
+  // Preload Handlebars templates.
   registerSettings();
+  configureHandleBars();
+  return preloadHandlebarsTemplates();
 });
 
 /* -------------------------------------------- */
@@ -59,78 +63,24 @@ Hooks.once('ready', function () {
 /*  Handlebars                                  */
 /* -------------------------------------------- */
 
-const configureHandleBar = () => {
-  // Pre-load templates
-  const templatePaths = [
-    "systems/spao/templates/parts/items-list.html",
-    "systems/cairn/templates/parts/container-list.html",
-    "systems/spao/templates/parts/feature-list.html",
-  ];
-
-  foundry.applications.handlebars.loadTemplates(templatePaths);
-
-  // If you need to add Handlebars helpers, here are a few useful examples:
-  Handlebars.registerHelper("concat", function () {
-    let outStr = "";
-
-    for (const arg in arguments) {
-      if (typeof arguments[arg] !== "object") {
-        outStr += arguments[arg];
-      }
-    }
-
-    return outStr;
-  });
-
-  Handlebars.registerHelper("toLowerCase", function (str) {
-    return str.toLowerCase();
-  });
-
-  Handlebars.registerHelper("boldIf", function (cond, options) {
-    return cond
-      ? "<strong>" + options.fn(this) + "</strong>"
-      : options.fn(this);
-  });
-
-  Handlebars.registerHelper("ifPrint", (cond, v1) => (cond ? v1 : ""));
-  Handlebars.registerHelper("ifPrintElse", (cond, v1, v2) => (cond ? v1 : v2));
-
-  Handlebars.registerHelper("times", function (n, block) {
-    var accum = "";
-    for (var i = 0; i < n; ++i) {
-      block.data.index = i;
-      block.data.first = i === 0;
-      block.data.last = i === n - 1;
-      accum += block.fn(this);
+const configureHandleBars = () => {
+// Helper para criar loops
+Handlebars.registerHelper('times', function(n, block) {
+    var accum = '';
+    for(var i = 1; i <= n; i++) {
+        accum += block.fn(i);
     }
     return accum;
-  });
+});
 
-  Handlebars.registerHelper("isNotNull", function (val) {
-    return val !== null && val != undefined;
-  });
+// Helper para verificar se há talentos
+Handlebars.registerHelper('hasItem', function(items) {
+    if (!items) return false;
+    return items.some(item => item.type === "talento");
+});
 
-  Handlebars.registerHelper("isFatigue", function (val) {
-    return val == game.i18n.localize("CAIRN.Fatigue");
-  });
-
-  Handlebars.registerHelper("not", function (val) {
-    return !val;
-  });
-
-  Handlebars.registerHelper("markItemUsed", function (item, options) {
-    const usable =
-      item.system.uses &&
-      item.system.uses.max;
-    return usable && item.system.uses.value <= 0
-      ? '<span style="opacity: 0.65;">' +
-      options.fn(this) +
-      "</span>"
-      : options.fn(this);
-  });
-
-  Handlebars.registerHelper("hidden", function (val) {
-    if (val) return "display: none";
-    return "";
-  });
+// Helper para comparação maior que
+Handlebars.registerHelper('gt', function(a, b) {
+    return a > b;
+});
 };

@@ -9,7 +9,7 @@ export class SpaoItem extends Item {
   prepareData() {
     super.prepareData();
 
-    this.system.isEquipable = ["weapon", "armor", "spellbook"].includes(this.type);
+    this.system.isEquipable = ["arma", "armadura", "magia"].includes(this.type);
     this.system.hasPlusMinus = (this.system.uses?.max ?? 0) > 0;
 
     if (this.system.uses) {
@@ -21,13 +21,13 @@ export class SpaoItem extends Item {
     if (this.system.useItemIcons) {
       this.system.icon = "";
       switch (this.type) {
-        case "spellbook":
+        case "magia":
           this.system.icon = "book";
           break;
-        case "weapon":
+        case "arma":
           this.system.icon = "sword";
           break;
-        case "armor":
+        case "armadura":
           this.system.icon = "shield";
           break;
         case "item":

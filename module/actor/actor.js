@@ -6,7 +6,7 @@ export class SpaoActor extends Actor {
 
   /** @override */
   static async create(data, options = {}) {
-    if (data.type === "character") {
+    if (data.type === "personagem") {
       foundry.utils.mergeObject(
         data,
         {
@@ -27,11 +27,8 @@ export class SpaoActor extends Actor {
     super.prepareData();
 
     this.system.useItemIcons = game.settings.get("spao", "use-item-icons");
-    // this.system.showFeatures = game.settings.get("spao", "show-features-section");
-    // this.system.showBio = (this.system.biography !== undefined && this.system.biography !== null);
-    // this.system.showDesc = (this.system.description !== undefined && this.system.description !== null);
-
-    if (this.type === "character") this._prepareCharacterData();
+    
+    if (this.type === "personagem") this._prepareCharacterData();
     if (this.type === "npc") this._prepareNpcData();
   }
 
@@ -39,7 +36,7 @@ export class SpaoActor extends Actor {
    * Prepare Character type specific data
    */
   _prepareCharacterData(actorData) {
-    if (this.type !== "character") return;
+    if (this.type !== "personagem") return;
 
     // Make modifications to data here.
 
@@ -75,7 +72,7 @@ export class SpaoActor extends Actor {
    * Prepare character roll data.
    */
   _getCharacterRollData(data) {
-    if (this.type !== "character") return;
+    if (this.type !== "personagem") return;
 
     // Copy the ability scores to the top level, so that rolls can use
     // formulas like `@str.mod + 4`.
@@ -112,7 +109,7 @@ export class SpaoActor extends Actor {
 
   calculateArmor() {
     const armorItems = this.items
-      .filter((item) => ["armor", "item"].includes(item.type))
+      .filter((item) => ["armadura"].includes(item.type))
       .filter((item) => item.system.equipped ?? false)
       .map((item) => parseInt(item.system.armor ?? 0, 10))
       .reduce((a, b) => a + b, 0);

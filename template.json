@@ -1,7 +1,7 @@
 {
   "Actor": {
     "types": [
-      "character",
+      "personagem",
       "npc"
     ],
     "templates": {
@@ -65,7 +65,7 @@
         }
       }
     },
-    "character": {
+    "personagem": {
       "templates": [
         "base",
         "actorBase"
@@ -86,10 +86,11 @@
   "Item": {
     "types": [
       "item",
-      "weapon",
-      "armor",
-      "spellbook",
-      "object"
+      "arma",
+      "armadura",
+      "magia",
+      "talento",
+      "kit"
     ],
     "templates": {
       "itemBase": {
@@ -113,18 +114,20 @@
           "value": 0,
           "max": 0
         }
+      },
+      "hasTier": {
+        "maxTier": 0,
+        "currentTier": 0
       }
     },
     "item": {
       "templates": [
         "base",
         "itemBase",
-        "equipable",
-        "hasDamage",
         "consumable"
       ]
     },
-    "weapon": {
+    "arma": {
       "templates": [
         "base",
         "itemBase",
@@ -132,7 +135,7 @@
         "equipable"
       ]
     },
-    "armor": {
+    "armadura": {
       "templates": [
         "base",
         "itemBase",
@@ -140,17 +143,25 @@
       ],
       "armor": 1
     },
-    "spellbook": {
-      "templates": [
-        "base",
-        "itemBase"
-      ]
-    },
-    "object": {
+    "magia": {
       "templates": [
         "base",
         "itemBase",
-        "consumable"
+        "hasDamage",
+        "hasTier"
+      ]
+    },
+    "talento": {
+      "templates": [
+        "base",
+        "itemBase",
+        "hasTier"
+      ]
+    },
+    "kit": {
+      "templates": [
+        "base",
+        "itemBase"
       ]
     }
   }
