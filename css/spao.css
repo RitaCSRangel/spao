@@ -735,6 +735,16 @@
     border-radius: 4px;
 }
 
+.chat-magic-roll-details {
+    margin-top: 8px;
+    padding: 8px;
+    background: #f5f5f5;
+    border-radius: 4px;
+    display: flex;
+    flex-direction: column;
+    gap: 1px;
+}
+
 .chat-attack-detail-title {
     margin-bottom: 4px;
 }
@@ -869,8 +879,24 @@
     background: white;
 }
 
+
 /******************************************************************************
- * INVENTORY SECTION                                                          *
+ * LISTS                                                                      *
+ ******************************************************************************/
+
+.actor-sheet-list-header {
+    display: flex;
+    grid-template-columns: 40px 1fr 150px 80px;
+    align-items: center;
+    padding: 10px;
+    background: #f5f5f5;
+    border-radius: 4px;
+    font-weight: bold;
+    gap: 15px;
+}
+
+/******************************************************************************
+ * INVENTORY SECTION LIST                                                     *
  ******************************************************************************/
 
 .inventory-section {
@@ -1064,7 +1090,7 @@
 }
 
 /******************************************************************************
- * TALENTS SECTION                                                            *
+ * TALENTS SECTION LIST                                                       *
  ******************************************************************************/
 
 .talents-section {
@@ -1094,17 +1120,6 @@
 
 .talent-item-row:last-child {
     border-bottom: none;
-}
-
-.talents-header {
-    display: flex;
-    grid-template-columns: 40px 1fr 150px 80px;
-    align-items: center;
-    padding: 10px;
-    background: #f5f5f5;
-    border-radius: 4px;
-    font-weight: bold;
-    gap: 15px;
 }
 
 .talents-header-name {
@@ -1263,8 +1278,15 @@
 }
 
 /******************************************************************************
- * MAGIC SECTION                                                              *
+ * MAGIC SECTION ST                                                           *
  ******************************************************************************/
+.magic-focus-section {
+    padding: 10px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    justify-content: flex-end;
+}
 
 .magic-section {
     padding: 10px;
@@ -1293,17 +1315,6 @@
 
 .magic-item-row:last-child {
     border-bottom: none;
-}
-
-.magic-header {
-    display: grid;
-    grid-template-columns: 40px 1fr 50px 80px;
-    align-items: center;
-    padding: 10px;
-    background: #f5f5f5;
-    border-radius: 4px;
-    font-weight: bold;
-    gap: 15px;
 }
 
 .magic-header-name {
@@ -1371,10 +1382,8 @@
     color: #333;
     min-width: 20px;
     text-align: center;
-    background: #f8f8f8;
     padding: 4px 8px;
-    border-radius: 4px;
-    border: 1px solid #e0e0e0;
+    width: max-content;
 }
 
 .magic-item-controls {
@@ -1442,4 +1451,11 @@
 .no-magic-message p {
     margin: 0;
     font-size: 16px;
+}
+
+.send-item-tochat {
+    display: flex;
+    padding: 10px;
+    gap: 10px;
+    align-items: center;
 }

@@ -19,17 +19,18 @@
                     <div class="item-resource-counter short-counter">
                         <label class="item-sheet-resource-label" for="system.tier">{{ localize 'SPAO.Tier' }}</label>
                         <div class="resource-input-wrapper">
-                            <input type="text" name="system.currentTier" id="system.tier" value="{{data.system.currentTier}}"
-                                data-dtype="Number"/>
+                            <input type="text" name="system.currentTier" id="system.tier"
+                                value="{{data.system.currentTier}}" data-dtype="Number" />
                             <span> / </span>
                             <input type="text" name="system.maxTier" id="system.maxTier" value="{{data.system.maxTier}}"
-                                data-dtype="Number" readonly/>
+                                data-dtype="Number" />
                         </div>
                     </div>
 
                     <!-- Damage Dice -->
                     <div class="item-resource-counter short-counter">
-                        <label class="item-sheet-resource-label" title="{{ localize 'SPAO.Damage' }}">{{ localize 'SPAO.Damage' }}</label>
+                        <label class="item-sheet-resource-label" title="{{ localize 'SPAO.Damage' }}">{{ localize
+                            'SPAO.Damage' }}</label>
                         <div class="resource-input-wrapper">
                             <input type="text" name="system.dice.quantity" id="system.dice.quantity"
                                 value="{{data.system.dice.quantity}}" data-dtype="String" style="width: 40%;" />
@@ -44,6 +45,65 @@
                                 <option value="d12">d12</option>
                                 {{/select}}
                             </select>
+                        </div>
+                    </div>
+
+                    <!-- Tradition -->
+                    <div class="item-resource-counter short-counter">
+                        <label class="item-sheet-resource-label" for="system.tradition">{{ localize 'SPAO.Tradition'
+                            }}</label>
+                        <div class="resource-input-wrapper">
+                            <input type="text" name="system.tradition" id="system.tradition"
+                                value="{{data.system.tradition}}" data-dtype="String" />
+                        </div>
+                    </div>
+
+                    <!-- Cast Time -->
+                    <div class="item-resource-counter short-counter">
+                        <label class="item-sheet-resource-label" for="system.castTime">{{ localize 'SPAO.CastTime'
+                            }}</label>
+                        <div class="resource-input-wrapper">
+                            <input type="text" name="system.castTime" id="system.castTime"
+                                value="{{data.system.castTime}}" data-dtype="Number" />
+                        </div>
+                    </div>
+
+                    <!-- Range -->
+                    <div class="item-resource-counter short-counter">
+                        <label class="item-sheet-resource-label" for="system.range">{{ localize 'SPAO.Range' }}</label>
+                        <div class="resource-input-wrapper">
+                            <input type="text" name="system.range" id="system.range" value="{{data.system.range}}"
+                                data-dtype="Number" />
+                        </div>
+                    </div>
+
+                    <!-- Targets -->
+                    <div class="item-resource-counter short-counter">
+                        <label class="item-sheet-resource-label" for="system.targets">{{ localize 'SPAO.Targets'
+                            }}</label>
+                        <div class="resource-input-wrapper">
+                            <input type="text" name="system.targets" id="system.targets" value="{{data.system.targets}}"
+                                data-dtype="Number" />
+                        </div>
+                    </div>
+
+                    <!-- Defense -->
+                    <div class="item-resource-counter short-counter">
+                        <label class="item-sheet-resource-label" for="system.defense">{{ localize 'SPAO.Defense'
+                            }}</label>
+                        <div class="resource-input-wrapper">
+                            <input type="text" name="system.defense" id="system.defense" value="{{data.system.defense}}"
+                                data-dtype="String" />
+                        </div>
+                    </div>
+
+                    <!-- Duration -->
+                    <div class="item-resource-counter short-counter">
+                        <label class="item-sheet-resource-label" for="system.duration">{{ localize 'SPAO.Duration'
+                            }}</label>
+                        <div class="resource-input-wrapper">
+                            <input type="text" name="system.duration" id="system.duration"
+                                value="{{data.system.duration}}" data-dtype="String" />
                         </div>
                     </div>
                 </div>

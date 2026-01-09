@@ -24,7 +24,7 @@
   "SPAO.int": "Inteligência",
   "SPAO.car": "Carisma",
   "SPAO.Focus": "Foco",
-  "SPAO.Skills": "Habilidades",
+  "SPAO.Skills": "Perícias",
   "SPAO.Talents": "Talentos",
   "SPAO.Magic": "Magias",
   "SPAO.Inventory": "Inventário",
@@ -80,5 +80,11 @@
   "SPAO.ItemEquip": "Equipar",
   "SPAO.ItemRemoveQuantity": "Remover",
   "SPAO.ItemUnequip": "Desequipar",
-  "SPAO.ApplyDamage": "Aplicar dano"
+  "SPAO.ApplyDamage": "Aplicar dano",
+  "SPAO.Tradition": "Tradição",
+  "SPAO.CastTime": "Tempo de Conjuração",
+  "SPAO.Range": "Alcance",
+  "SPAO.Targets": "Alvos",
+  "SPAO.Defense": "Defesa",
+  "SPAO.Duration": "Duração"
 }

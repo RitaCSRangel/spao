@@ -40,18 +40,6 @@
                         </div>
                     </div>
 
-                    <!-- FOCO -->
-                    <div class="resource-counter hp-counter">
-                        <label for="system.focus.value">{{ localize 'SPAO.Focus' }}</label>
-                        <div class="resource-input-wrapper">
-                            <input type="text" name="system.focus.value" id="system.focus.value"
-                                value="{{data.system.focus.value}}" data-dtype="Number" />
-                            <span> / </span>
-                            <input type="text" name="system.focus.max" value="{{data.system.focus.max}}"
-                                data-dtype="Number" readonly />
-                        </div>
-                    </div>
-
                     <!-- MOVIMENTO -->
                     <div class="resource-counter hp-counter">
                         <label for="system.movement.value">{{ localize 'SPAO.Movement' }}</label>
@@ -105,10 +93,10 @@
 
         <!-- TABS: NAV HEADER -->
         <nav class="tabs" data-group="primary">
-            <a class="item" data-group="primary" data-tab="skills">{{ localize 'SPAO.Skills' }}</a>
-            <a class="item" data-group="primary" data-tab="talents">{{ localize 'SPAO.Talents' }}</a>
-            <a class="item" data-group="primary" data-tab="magic">{{ localize 'SPAO.Magic' }}</a>
-            <a class="item" data-group="primary" data-tab="inventory">{{ localize 'SPAO.Inventory' }}</a>
+            <a class="item" data-group="primary" data-tab="pericias">{{ localize 'SPAO.Skills' }}</a>
+            <a class="item" data-group="primary" data-tab="talentos">{{ localize 'SPAO.Talents' }}</a>
+            <a class="item" data-group="primary" data-tab="magia">{{ localize 'SPAO.Magic' }}</a>
+            <a class="item" data-group="primary" data-tab="inventario">{{ localize 'SPAO.Inventory' }}</a>
             <a class="item" data-group="primary" data-tab="notes">{{ localize 'SPAO.Notes' }}</a>
         </nav>
 
@@ -116,23 +104,23 @@
         <section class="content">
 
             <!-- TABS: SKILLS -->
-            <div class="tab" data-group="primary" data-tab="skills">
-                {{> "systems/spao/templates/actor/parts/actor-skills.html"}}
+            <div class="tab" data-group="primary" data-tab="pericias">
+                {{> "systems/spao/templates/actor/parts/actor-pericias.html"}}
             </div>
 
             <!-- TABS: TALENTS -->
-            <div class="tab" data-group="primary" data-tab="talents">
-                {{> "systems/spao/templates/actor/parts/actor-talents.html"}}
+            <div class="tab" data-group="primary" data-tab="talentos">
+                {{> "systems/spao/templates/actor/parts/actor-talentos.html"}}
             </div>
 
             <!-- TABS: MAGIC -->
-            <div class="tab" data-group="primary" data-tab="magic">
-                {{> "systems/spao/templates/actor/parts/actor-magic.html"}}
+            <div class="tab" data-group="primary" data-tab="magia">
+                {{> "systems/spao/templates/actor/parts/actor-magia.html"}}
             </div>
 
             <!-- TABS: INVENTORY -->
-            <div class="tab" data-group="primary" data-tab="inventory">
-                {{> "systems/spao/templates/actor/parts/actor-inventory.html"}}
+            <div class="tab" data-group="primary" data-tab="inventario">
+                {{> "systems/spao/templates/actor/parts/actor-inventario.html"}}
             </div>
 
             <!-- TABS: NOTES -->

@@ -6,10 +6,10 @@
 export const preloadHandlebarsTemplates = async function () {
   return loadTemplates([
     // Actor partials.
-    'systems/spao/templates/actor/parts/actor-skills.html',
-    'systems/spao/templates/actor/parts/actor-inventory.html',
-    'systems/spao/templates/actor/parts/actor-talents.html',
-    'systems/spao/templates/actor/parts/actor-magic.html'
+    'systems/spao/templates/actor/parts/actor-pericias.html',
+    'systems/spao/templates/actor/parts/actor-inventario.html',
+    'systems/spao/templates/actor/parts/actor-talentos.html',
+    'systems/spao/templates/actor/parts/actor-magia.html'
     // // Item partials
     // 'systems/spao/templates/item/parts/item-effects.hbs',
   ]);

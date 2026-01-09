@@ -76,7 +76,7 @@ Handlebars.registerHelper('times', function(n, block) {
 // Helper para verificar se há talentos
 Handlebars.registerHelper('hasItem', function(items) {
     if (!items) return false;
-    return items.some(item => item.type === "item");
+    return items.some(item => item.type === "item" || item.type === "armadura" || item.type === "arma");
 });
 
 Handlebars.registerHelper('hasTalent', function(items) {

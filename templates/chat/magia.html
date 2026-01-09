@@ -1,0 +1,51 @@
+<div class="spao chat-card">
+
+    <!-- NOME -->
+    <div class="resource-title send-item-tochat">
+        <div class="inventory-item-image">
+            <img class="send-item" src="{{itemImage}}" title="{{name}}" />
+        </div>
+
+        <div class="resource-title"><label>{{name}}</label></div>
+
+    </div>
+
+    <!-- DETALHES -->
+    <div class="chat-attack-footer">
+
+        <div id="damage-details" class="roll-details chat-magic-roll-details">
+            <!-- <div class="chat-attack-detail-title"><strong>Informações</strong></div> -->
+
+            {{#if itemTradition}}
+            <div class="chat-attack-detail-item"><strong>Tradição:</strong> {{itemTradition}}</div>
+            {{/if}}
+
+            {{#if itemCastTime}}
+            <div class="chat-attack-detail-item"><strong>Tempo de Conjuração:</strong> {{itemCastTime}}</div>
+            {{/if}}
+
+            {{#if itemRange}}
+            <div class="chat-attack-detail-item"><strong>Alcance:</strong> {{itemRange}}</div>
+            {{/if}}
+
+            {{#if itemTargets}}
+            <div class="chat-attack-detail-item"><strong>Alvos:</strong> {{itemTargets}} alvos</div>
+            {{/if}}
+
+            {{#if itemDefense}}
+            <div class="chat-attack-detail-item"><strong>Defesa:</strong> {{itemDefense}}</div>
+            {{/if}}
+
+            {{#if itemDuration}}
+            <div class="chat-attack-detail-item"><strong>Duração:</strong> {{itemDuration}}</div>
+            {{/if}}
+
+        </div>
+        
+        <br/>
+
+        <div class="chat-attack-footer-content">
+            {{itemDescription}}
+        </div>
+    </div>
+</div>

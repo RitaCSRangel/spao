@@ -180,7 +180,6 @@ export class SpaoActorSheet extends ActorSheet {
     html.find(".item-create").click(this._onItemCreate.bind(this)); // Add Inventory Item
     html.find(".item-delete").on("click", (ev) => this._onItemDelete(ev)); // Delete Inventory Item
     html.find(".item-edit").on("click", (ev) => this._onItemEdit(ev)); // Delete Inventory Item
-
     html.find(".effect-control").on("click", (ev) => this._onEffectControl(ev)); // Active Effect management
     html.find(".rollable").on("click", this._onRoll.bind(this)); // Handle clickable rolls
 
@@ -201,6 +200,8 @@ export class SpaoActorSheet extends ActorSheet {
     html.find('.attribute-roll').click(this.RolarSave.bind(this));
     html.find('.skill-roll').click(this.RolarSkill.bind(this));
     html.find(".item-toggle-equipped").on("click", (ev) => this.EquiparItem(ev));
+    html.find(".send-item").on("click", (ev) => this.MostrarNoChat(ev));
+    html.find(".item-cast").on("click", (ev) => this.CastarMagia(ev));
 
   }
 
@@ -324,28 +325,34 @@ export class SpaoActorSheet extends ActorSheet {
     const formula = `1d20 + ${totalBonus}`;
 
     // Criar e rolar
-    const roll = new Roll(formula);
-    await roll.roll({ async: true });
+    const skillRoll = new Roll(formula);
+    await skillRoll.roll({ async: true });
+
+    // Verificar o resultado
+    const skillTotal = skillRoll.total;
+    const rolledValue = skillRoll.terms[0].results[0].result;
 
     // Mensagem formatada
     const skillName = game.i18n.localize(`SPAO.${skillKey}`);
     let data = {
+      skillRoll: skillRoll,
       skillName: skillName,
       totalBonus: totalBonus,
       skillValue: skillValue,
       attributeValue: attributeValue,
-      proficiencyBonus: proficiencyBonus
+      proficiencyBonus: proficiencyBonus,
+      skillTotal: skillTotal
     }
 
-    const flavor = await renderTemplate(
-      "systems/spao/templates/chat/skill.html",
+    const content = await renderTemplate(
+      "systems/spao/templates/chat/pericia.html",
       data
     );
 
     // Enviar para o chat
-    roll.toMessage({
+    skillRoll.toMessage({
       speaker: ChatMessage.getSpeaker({ actor: this.actor }),
-      flavor: flavor
+      content: content
     });
   }
 
@@ -484,7 +491,7 @@ export class SpaoActorSheet extends ActorSheet {
       };
 
       const attackContent = await renderTemplate(
-        "systems/spao/templates/chat/attack.html",
+        "systems/spao/templates/chat/ataque.html",
         data
       );
 
@@ -528,6 +535,82 @@ export class SpaoActorSheet extends ActorSheet {
       const isEquipped = item.system.equipped;
       await item.update({ 'system.equipped': !isEquipped });
     }
+  }
+
+  async MostrarNoChat(ev) {
+    // Obter o item associado ao botão clicado
+    const li = $(ev.currentTarget).parents(".item");
+    const item = this.actor.items.get(li.data("itemId"));
+
+    if (!item) return;
+
+    const cleanDescription = this.extractTextFromHTML(item.system.description);
+
+    // Mensagem formatada
+    let data = {
+      name: item.name,
+      itemImage: item.img,
+      itemDescription: cleanDescription
+    }
+
+    const content = await renderTemplate(
+      "systems/spao/templates/chat/item-detalhes.html",
+      data
+    );
+
+    ChatMessage.create({
+      user: game.user.id, // Usuário que envia
+      speaker: ChatMessage.getSpeaker({ actor: this.actor }), // Configura o speaker
+      content: content,
+    });
+  }
+
+  async CastarMagia(ev) {
+    // Obter o item associado ao botão clicado
+    const li = $(ev.currentTarget).parents(".item");
+    const item = this.actor.items.get(li.data("itemId"));
+
+    if (!item && item.type !== "magia") return;
+
+    const cleanDescription = this.extractTextFromHTML(item.system.description);
+
+    // Mensagem formatada
+    let data = {
+      name: item.name,
+      itemImage: item.img,
+      itemDescription: cleanDescription,
+      itemTradition: item.system.tradition,
+      itemCastTime: item.system.castTime,
+      itemRange: item.system.range,
+      itemTargets: item.system.targets,
+      itemDefense: item.system.defense,
+      itemDuration: item.system.duration
+    }
+
+    const content = await renderTemplate(
+      "systems/spao/templates/chat/magia.html",
+      data
+    );
+
+    ChatMessage.create({
+      user: game.user.id, // Usuário que envia
+      speaker: ChatMessage.getSpeaker({ actor: this.actor }), // Configura o speaker
+      content: content,
+    });
+  }
+
+  /* --------------- HELPERS ----------------------
+  ------------------------------------------------- */
+
+  extractTextFromHTML(htmlString) {
+    if (!htmlString) return "";
+
+    // Cria um elemento temporário
+    const tempDiv = document.createElement('div');
+    tempDiv.innerHTML = htmlString;
+
+    // Retorna apenas o texto
+    return tempDiv.textContent || tempDiv.innerText || "";
   }
 
 }

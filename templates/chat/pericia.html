@@ -1,0 +1,53 @@
+<div class="spao chat-card">
+
+    <!-- NOME -->
+    <div class="resource-title"><label>{{skillName}}</label></div>
+
+    <div class="dice-roll">
+        <div class="dice-result">
+            <div class="dice-formula">{{skillRoll.formula}}</div>
+            <div class="dice-tooltip chat-attack-tooltip">
+                <section class="tooltip-part">
+                    <div class="dice">
+                        <header class="part-header flexrow">
+                            <span class="part-formula">{{skillRoll.formula}}</span>
+                        </header>
+                        <ol class="dice-rolls">
+                            {{#each skillRoll.dice}}
+                            {{#each this.results}}
+                            <li class="roll die d{{../faces}}">{{result}}</li>
+                            {{/each}}
+                            {{/each}}
+                        </ol>
+                    </div>
+                </section>
+                {{#if skillRoll.modifiers}}
+                <section class="tooltip-part">
+                    <div class="dice">
+                        <header class="part-header flexrow">
+                            <span class="part-formula">Modificadores</span>
+                        </header>
+                        <ul class="dice-modifiers">
+                            {{#each skillRoll.modifiers}}
+                            <li><strong>{{this.name}}:</strong> {{this.value}}</li>
+                            {{/each}}
+                        </ul>
+                    </div>
+                </section>
+                {{/if}}
+            </div>
+            <h4 class="dice-total" data-target="attack-details">
+                {{skillTotal}}
+            </h4>
+        </div>
+    </div>
+
+    <!-- DETALHES -->
+    <div class="chat-attack-footer">
+        <div class="chat-attack-footer-content">
+            <strong>Skill:</strong> {{skillValue}}<br />
+            <strong>Atributo:</strong> {{attributeValue}}<br />
+            <strong>Proficiência:</strong> {{proficiencyBonus}}
+        </div>
+    </div>
+</div>

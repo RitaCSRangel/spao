@@ -53,21 +53,5 @@ export class SpaoItemSheet extends ItemSheet {
 
     // Everything below here is only needed if the sheet is editable
     if (!this.options.editable) return;
-
-    // If it's bulky it cannot be weightless too
-    html.find("[name='system.bulky']").change((e) => {
-      if (e.target.checked) {
-        if (html.find("[name='system.weightless']").length > 0) {
-          html.find("[name='system.weightless']")[0].checked = false;
-        }
-      }
-    });
-    html.find("[name='system.weightless']").change((e) => {
-      if (e.target.checked) {
-        if (html.find("[name='system.bulky']").length > 0) {
-          html.find("[name='system.bulky']")[0].checked = false;
-        }
-      }
-    });
   }
 }

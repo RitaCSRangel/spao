@@ -149,7 +149,13 @@
         "itemBase",
         "hasDamage",
         "hasTier"
-      ]
+      ],
+      "tradition": "",
+      "castTime": 0,
+      "range": 0,
+      "targets": 0,
+      "defense": "",
+      "duration": ""
     },
     "talento": {
       "templates": [
