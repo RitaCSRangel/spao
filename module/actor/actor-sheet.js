@@ -375,25 +375,33 @@ export class SpaoActorSheet extends ActorSheet {
     const formula = `1d20 + ${totalBonus}`;
 
     // Criar e rolar
-    const roll = new Roll(formula);
-    await roll.roll({ async: true });
+    const saveRoll = new Roll(formula);
+    await saveRoll.roll({ async: true });
+
+    // Verificar o resultado
+    const saveTotal = saveRoll.total;
+    const rolledValue = saveRoll.terms[0].results[0].result;
 
     // Mensagem formatada
-    const name = "Save de " + game.i18n.localize(`SPAO.${attributeKey}`);
+    const saveName = game.i18n.localize(`SPAO.${attributeKey}`);
     let data = {
-      name: name,
-      attributeValue: attributeValue
+      saveRoll: saveRoll,
+      saveName: saveName,
+      totalBonus: totalBonus,
+      saveValue: totalBonus,
+      attributeValue: attributeValue,
+      saveTotal: saveTotal
     }
 
-    const flavor = await renderTemplate(
+    const content = await renderTemplate(
       "systems/spao/templates/chat/save.html",
       data
     );
 
     // Enviar para o chat
-    roll.toMessage({
+    saveRoll.toMessage({
       speaker: ChatMessage.getSpeaker({ actor: this.actor }),
-      flavor: flavor
+      content: content
     });
   }
 

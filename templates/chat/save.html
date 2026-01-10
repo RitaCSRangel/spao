@@ -1,7 +1,46 @@
 <div class="spao chat-card">
 
     <!-- NOME -->
-    <div class="resource-title"><label>{{name}}</label></div>
+    <div class="resource-title"><label>{{saveName}}</label></div>
+
+    <div class="dice-roll">
+        <div class="dice-result">
+            <div class="dice-formula">{{saveRoll.formula}}</div>
+            <div class="dice-tooltip chat-attack-tooltip">
+                <section class="tooltip-part">
+                    <div class="dice">
+                        <header class="part-header flexrow">
+                            <span class="part-formula">{{saveRoll.formula}}</span>
+                        </header>
+                        <ol class="dice-rolls">
+                            {{#each saveRoll.dice}}
+                            {{#each this.results}}
+                            <li class="roll die d{{../faces}}">{{result}}</li>
+                            {{/each}}
+                            {{/each}}
+                        </ol>
+                    </div>
+                </section>
+                {{#if saveRoll.modifiers}}
+                <section class="tooltip-part">
+                    <div class="dice">83329992
+                        <header class="part-header flexrow">
+                            <span class="part-formula">Modificadores</span>
+                        </header>
+                        <ul class="dice-modifiers">
+                            {{#each saveRoll.modifiers}}
+                            <li><strong>{{this.name}}:</strong> {{this.value}}</li>
+                            {{/each}}
+                        </ul>
+                    </div>
+                </section>
+                {{/if}}
+            </div>
+            <h4 class="dice-total" data-target="attack-details">
+                {{saveTotal}}
+            </h4>
+        </div>
+    </div>
 
     <!-- DETALHES -->
     <div class="chat-attack-footer">
