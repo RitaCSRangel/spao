@@ -84,5 +84,6 @@
   "SPAO.Range": "Alcance",
   "SPAO.Targets": "Alvos",
   "SPAO.Defense": "Defesa",
-  "SPAO.Duration": "Duração"
+  "SPAO.Duration": "Duração",
+  "SPAO.Quickbar": "Atalho"
 }

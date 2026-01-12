@@ -16,6 +16,25 @@
 }
 
 /******************************************************************************
+ * Default style.                                                             * 
+ ******************************************************************************/
+.window-content {
+    background: #f2f2f2 !important;
+}
+
+.dialog-button {
+    background-color: #333;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    font-family: "Alegreya", Times, "Times New Roman", Georgia, serif;
+    font-size: 14px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+
+/******************************************************************************
  * General style.                                                             * 
  ******************************************************************************/
 
@@ -656,6 +675,13 @@
  * Chat message.                                                                *
  ******************************************************************************/
 
+.send-item-tochat {
+    display: flex;
+    padding: 10px;
+    gap: 10px;
+    align-items: center;
+}
+
 .chat-message .flavor-dice-roll {
     display: flex;
     flex-direction: row;
@@ -765,11 +791,11 @@
     font-size: 0.9em;
 }
 
-.success{
+.success {
     color: green;
 }
 
-.failure{
+.failure {
     color: red;
 }
 
@@ -1067,7 +1093,7 @@
     background-color: #555;
 }
 
-/* Estilo para o cabeçalho da lista */
+
 .spao-items-list-header {
     display: flex;
     align-items: center;
@@ -1442,9 +1468,10 @@
     font-size: 16px;
 }
 
-.send-item-tochat {
-    display: flex;
+/******************************************************************************
+ * DIALOG                                                    *
+ ******************************************************************************/
+
+.spao-dialog {
     padding: 10px;
-    gap: 10px;
-    align-items: center;
 }

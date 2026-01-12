@@ -211,22 +211,124 @@ export class SpaoActorSheet extends ActorSheet {
   async _onItemCreate(event) {
     event.preventDefault();
 
-    // Tenta usar template do sistema, se existir
-    const template = game.system.template?.Item;
+    // Criar o conteúdo HTML da caixa de diálogo
+    const content = await renderTemplate(
+      "systems/spao/templates/dialog/item-type.html"
+    );
 
-    const itemData = {
-      name: "Novo Item",
-      type: "item",
-      img: "icons/svg/item-bag.svg",
-      system: foundry.utils.mergeObject(
-        template?.system || {},
-        {
-          description: "",
-          quantity: 1
+    // Criar e mostrar a caixa de diálogo
+    new Dialog({
+      title: "Criar Novo Item",
+      content: content,
+      buttons: {
+        confirm: {
+          icon: '<i class="fas fa-check"></i>',
+          label: "Criar",
+          callback: async (html) => {
+            const itemType = html.find('#item-type-select').val();
+            await this._createItemByType(itemType);
+          }
+        },
+        cancel: {
+          icon: '<i class="fas fa-times"></i>',
+          label: "Cancelar"
         }
-      )
+      },
+      default: "confirm",
+      close: () => { }
+    }).render(true);
+  }
+
+  async _createItemByType(itemType) {
+    // Definir templates específicos para cada tipo de item
+    const itemTemplates = {
+      'item': {
+        name: "Novo Item",
+        type: "item",
+        img: "icons/svg/item-bag.svg",
+        system: {
+          description: "",
+          quantity: 1,
+          weight: 0.1
+        }
+      },
+      'arma': {
+        name: "Nova Arma",
+        type: "arma",
+        img: "icons/svg/sword.svg",
+        system: {
+          description: "",
+          quantity: 1,
+          atrib: "STR",
+          dice: {
+            quantity: 1,
+            type: "d6"
+          },
+          prof: "trained",
+          equipped: false,
+          weight: 1.0
+        }
+      },
+      'armadura': {
+        name: "Nova Armadura",
+        type: "armadura",
+        img: "icons/svg/shield.svg",
+        system: {
+          description: "",
+          quantity: 1,
+          armorValue: 10,
+          equipped: false,
+          weight: 10.0
+        }
+      },
+      'shield': {
+        name: "Novo Escudo",
+        type: "shield",
+        img: "icons/svg/shield.svg",
+        system: {
+          description: "",
+          quantity: 1,
+          armorValue: 1,
+          equipped: false,
+          weight: 5.0
+        }
+      },
+      'consumable': {
+        name: "Novo Consumível",
+        type: "consumable",
+        img: "icons/svg/potion.svg",
+        system: {
+          description: "",
+          quantity: 1,
+          uses: 1,
+          maxUses: 1,
+          weight: 0.5
+        }
+      }
     };
 
+    // Obter template do sistema se existir
+    const systemTemplate = game.system.template?.Item;
+
+    // Usar template do tipo específico se disponível
+    let itemData = itemTemplates[itemType];
+
+    // Mesclar com template do sistema se existir
+    if (systemTemplate) {
+      if (systemTemplate[itemType]) {
+        itemData.system = foundry.utils.mergeObject(
+          systemTemplate[itemType],
+          itemData.system
+        );
+      } else if (systemTemplate.system) {
+        itemData.system = foundry.utils.mergeObject(
+          systemTemplate.system,
+          itemData.system
+        );
+      }
+    }
+
+    // Criar o item
     await this.actor.createEmbeddedDocuments("Item", [itemData]);
   }
 
