@@ -178,6 +178,9 @@ export class SpaoActorSheet extends ActorSheet {
     if (!this.isEditable) return;
 
     html.find(".item-create").click(this._onItemCreate.bind(this)); // Add Inventory Item
+    html.find(".magia-create").click(this._onMagiaCreate.bind(this)); // Add Inventory Item
+    html.find(".talento-create").click(this._onTalentoCreate.bind(this)); // Add Inventory Item
+
     html.find(".item-delete").on("click", (ev) => this._onItemDelete(ev)); // Delete Inventory Item
     html.find(".item-edit").on("click", (ev) => this._onItemEdit(ev)); // Delete Inventory Item
     html.find(".effect-control").on("click", (ev) => this._onEffectControl(ev)); // Active Effect management
@@ -280,6 +283,51 @@ export class SpaoActorSheet extends ActorSheet {
       });
       return roll;
     }
+  }
+
+
+  //----------------------------------------------------------------------------------
+
+  async _onMagiaCreate(event) {
+    event.preventDefault();
+
+    // Tenta usar template do sistema, se existir
+    const template = game.system.template?.Item.magia;
+    const itemData = {
+      name: "Nova Magia",
+      type: "magia",
+      img: "icons/svg/item-bag.svg",
+      system: foundry.utils.mergeObject(
+        template?.system || {},
+        {
+          description: "",
+          quantity: 1
+        }
+      )
+    };
+
+    await this.actor.createEmbeddedDocuments("Item", [itemData]);
+  }
+
+  async _onTalentoCreate(event) {
+    event.preventDefault();
+
+    // Tenta usar template do sistema, se existir
+    const template = game.system.template?.Item.talento;
+    const itemData = {
+      name: "Novo Talento",
+      type: "talento",
+      img: "icons/svg/item-bag.svg",
+      system: foundry.utils.mergeObject(
+        template?.system || {},
+        {
+          description: "",
+          quantity: 1
+        }
+      )
+    };
+
+    await this.actor.createEmbeddedDocuments("Item", [itemData]);
   }
 
   //----------------------------------------------------------------------------------
@@ -511,25 +559,6 @@ export class SpaoActorSheet extends ActorSheet {
         content: attackContent,
         type: CONST.CHAT_MESSAGE_TYPES.ROLL,
         roll: attackRoll
-      });
-
-      // Adicionar event listener para a mensagem criada
-      Hooks.once('renderChatMessage', (messageDoc, html, messageData) => {
-        if (messageDoc.id === message.id) {
-          // Adicionar evento de clique para expandir/recolher
-          html.find('.expandable').click(function () {
-            const targetId = $(this).data('target');
-            const targetElement = html.find('#' + targetId);
-
-            if (targetElement.is(':visible')) {
-              targetElement.slideUp();
-              $(this).removeClass('expanded');
-            } else {
-              targetElement.slideDown();
-              $(this).addClass('expanded');
-            }
-          });
-        }
       });
     }
   }

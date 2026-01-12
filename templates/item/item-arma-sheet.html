@@ -28,6 +28,16 @@
                         </div>
                     </div>
 
+                    <!-- Adicionar na quickbar -->
+                    <div class="item-resource-counter short-counter">
+                        <label class="item-sheet-resource-label" for="system.quickbar">{{ localize 'SPAO.Quickbar'
+                            }}</label>
+                        <div class="resource-input-wrapper">
+                            <input type="checkbox" {{checked data.system.quickbar}} name="system.quickbar"
+                                id="system.quickbar" value="{{data.system.quickbar}}" data-dtype="Boolean"/>
+                        </div>
+                    </div>
+
                     <!-- Cost -->
                     <div class="item-resource-counter short-counter">
                         <label class="item-sheet-resource-label" for="system.cost.value">{{ localize 'SPAO.Cost'

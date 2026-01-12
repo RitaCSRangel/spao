@@ -107,7 +107,8 @@
           "quantity": 0
         },
         "atrib": 0,
-        "prof": "untrained"
+        "prof": "untrained",
+        "quickbar": false
       },
       "consumable": {
         "uses": {

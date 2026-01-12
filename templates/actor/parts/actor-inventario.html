@@ -44,6 +44,11 @@
                     </a>
                     <a class="item-delete" title="{{ localize 'SPAO.Delete' }}">
                         <i class="fas fa-trash"></i>
+                        {{#if (or (eq item.type "arma"))}}
+                        <a class="attack-roll" title="{{ localize 'SPAO.Attack' }}">
+                            <i class="fas fa-dice"></i>
+                        </a>
+                        {{/if}}
                     </a>
                 </div>
             </div>

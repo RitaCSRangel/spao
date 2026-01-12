@@ -54,7 +54,8 @@
                 <div class="character-sheet-section-abilities">
                     {{#each data.system.abilities as |ability key|}}
                     <div class="resource-counter hp-counter">
-                        <label><a class="attribute-roll" data-abilities="{{key}}" for="system.abilities.{{key}}.value">{{localize (concat 'SPAO.' key)}}</a></label>
+                        <label><a class="attribute-roll" data-abilities="{{key}}"
+                                for="system.abilities.{{key}}.value">{{localize (concat 'SPAO.' key)}}</a></label>
                         <div class="resource-input-wrapper">
                             <input type="text" name="system.abilities.{{key}}.value" value="{{ability.value}}"
                                 data-dtype="Number" />
@@ -75,6 +76,22 @@
             {{#each actor.items as |item|}}
             {{#if (eq item.type "arma")}}
             {{#if (eq item.system.equipped true)}}
+            {{#if (eq item.system.quickbar true)}}
+            <li class="item flexrow" data-item-id="{{item._id}}">
+                <div class='item-image'>
+                    <a class='attack-roll' data-roll-type='item'>
+                        <img src='{{item.img}}' title='{{item.name}}' />
+                    </a>
+                </div>
+            </li>
+            {{/if}}
+            {{/if}}
+            {{/if}}
+            {{/each}}
+
+            {{#each actor.items as |item|}}
+            {{#if (eq item.type "magia")}}
+            {{#if (eq item.system.quickbar true)}}
             <li class="item flexrow" data-item-id="{{item._id}}">
                 <div class='item-image'>
                     <a class='attack-roll' data-roll-type='item'>

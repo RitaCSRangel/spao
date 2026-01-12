@@ -57,6 +57,20 @@ Hooks.once('init', function () {
 Hooks.once('ready', function () {
   // Wait to register hotbar drop hook on ready so that modules could register earlier if they want to
   Hooks.on('hotbarDrop', (bar, data, slot) => createItemMacro(data, slot));
+
+  // Event delegation para todas as mensagens de chat
+  $(document).on('click', '.chat-message .expandable', function() {
+    const targetId = $(this).data('target');
+    const targetElement = $(this).closest('.chat-message').find('#' + targetId);
+    
+    if (targetElement.is(':visible')) {
+      targetElement.slideUp();
+      $(this).removeClass('expanded');
+    } else {
+      targetElement.slideDown();
+      $(this).addClass('expanded');
+    }
+  });
 });
 
 /* -------------------------------------------- */

@@ -9,22 +9,43 @@
             <div class="dice-roll">
                 <div class="dice-result">
                     <div class="dice-formula">{{attackRoll.formula}}</div>
-                    <div class="dice-tooltip">
-                        <!-- conteúdo da tooltip -->
+                    <div class="dice-tooltip chat-attack-tooltip">
+                        <section class="tooltip-part">
+                            <div class="dice">
+                                <header class="part-header flexrow">
+                                    <span class="part-formula">{{attackRoll.formula}}</span>
+                                </header>
+                                <ol class="dice-rolls">
+                                    {{#each attackRoll.dice}}
+                                    {{#each this.results}}
+                                    <li class="roll die d{{../faces}}">{{result}}</li>
+                                    {{/each}}
+                                    {{/each}}
+                                </ol>
+                            </div>
+                        </section>
+                        {{#if attackRoll.modifiers}}
+                        <section class="tooltip-part">
+                            <div class="dice">
+                                <header class="part-header flexrow">
+                                    <span class="part-formula">Modificadores</span>
+                                </header>
+                                <ul class="dice-modifiers">
+                                    {{#each attackRoll.modifiers}}
+                                    <li><strong>{{this.name}}:</strong> {{this.value}}</li>
+                                    {{/each}}
+                                </ul>
+                            </div>
+                        </section>
+                        {{/if}}
                     </div>
-                    
-                    <!-- Checkbox invisível para controlar a expansão -->
-                    <input type="checkbox" id="expand-attack" class="expand-checkbox">
-                    
-                    <label for="expand-attack" class="expandable dice-total ${resultClass}">
+                    <h4 class="dice-total ${resultClass} expandable {{resultClass}}" data-target="attack-details">
                         {{attackTotal}}
-                        <i class="fas fa-chevron-down expand-icon"></i>
-                    </label>
+                    </h4>
                 </div>
             </div>
-            
-            <!-- Detalhes do ataque (controlados pelo checkbox) -->
-            <div class="roll-details">
+            <!-- Detalhes do ataque (inicialmente ocultos) -->
+            <div id="attack-details" class="roll-details chat-attack-roll-details">
                 <div class="chat-attack-detail-title"><strong>Detalhes do Ataque:</strong></div>
                 <div class="chat-attack-detail-item">Rolagem:
                     {{#each attackRoll.dice}}
@@ -49,22 +70,30 @@
             <div class="dice-roll">
                 <div class="dice-result">
                     <div class="dice-formula">{{damageRoll.formula}}</div>
-                    <div class="dice-tooltip">
-                        <!-- conteúdo da tooltip -->
+                    <div class="dice-tooltip chat-attack-tooltip">
+                        <section class="tooltip-part">
+                            <div class="dice">
+                                <header class="part-header flexrow">
+                                    <span class="part-formula">{{damageRoll.formula}}</span>
+                                </header>
+                                <ol class="dice-rolls">
+                                    {{#each damageRoll.dice}}
+                                    {{#each this.results}}
+                                    <li class="roll die d{{../faces}}">{{result}}</li>
+                                    {{/each}}
+                                    {{/each}}
+                                </ol>
+                            </div>
+                        </section>
                     </div>
-                    
-                    <!-- Checkbox para dano -->
-                    <input type="checkbox" id="expand-damage" class="expand-checkbox">
-                    
-                    <label for="expand-damage" class="expandable dice-total">
+                    <h4 class="dice-total expandable" data-target="damage-details">
                         {{damageRoll.total}} 
-                        <i class="fas fa-chevron-down expand-icon"></i>
-                    </label>
+                        <!-- {{damageRoll.total}} <span class="chat-attack-damage-type">{{damageType}}</span> -->
+                    </h4>
                 </div>
             </div>
-            
-            <!-- Detalhes do dano -->
-            <div class="roll-details">
+            <!-- Detalhes do dano (inicialmente ocultos) -->
+            <div id="damage-details" class="roll-details chat-attack-roll-details">
                 <div class="chat-attack-detail-title"><strong>Detalhes do Dano:</strong></div>
                 <div class="chat-attack-detail-item">Dados: {{damageRoll.formula}}</div>
                 <div class="chat-attack-detail-item">Rolagens:
