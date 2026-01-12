@@ -1,136 +1,289 @@
-<form class="spao" autocomplete="off">
-    <div class="item-sheet-grid magia">
-        <div class="item-sheet-grid-sections">
-            <!-- Portrait -->
-            <div class="item-sheet-section-portrait">
-                <img class="portrait" src="{{data.img}}" data-edit="img" title="{{data.name}}" />
+<form class="spao item-sheet" autocomplete="off">
+    <header class="item-header">
+        <!-- Portrait -->
+        <img class="item-img" src="{{data.img}}" data-edit="img" title="{{data.name}}" />
+
+
+        <!-- Name -->
+        <div class="item-name">
+            <input class="item-sheet-name" type="text" name="name" value="{{data.name}}"
+                placeholder="{{ localize 'SPAO.Name' }}" />
+        </div>
+    </header>
+
+    <section class="item-body">
+        <!-- Left Side details -->
+        <div class="item-summary">
+
+            <!-- Adicionar na quickbar -->
+            <div class="item-resource-counter short-counter">
+                <label class="item-sheet-resource-label" for="system.quickbar">{{ localize 'SPAO.Quickbar'
+                    }}</label>
+                <div class="resource-input-wrapper">
+                    <input type="checkbox" {{checked data.system.quickbar}} name="system.quickbar" id="system.quickbar"
+                        value="{{data.system.quickbar}}" data-dtype="Boolean" />
+                </div>
             </div>
 
-            <!-- INFORMATION -->
-            <div class="item-sheet-section-info">
-                <!-- Name -->
-                <div class="item-sheet-section-name">
-                    <input class="item-sheet-name" type="text" name="name" value="{{data.name}}"
-                        placeholder="{{ localize 'SPAO.Name' }}" />
-                </div>
-
-                <div class="item-sheet-section-stats">
-
-                    <!-- Adicionar na quickbar -->
-                    <div class="item-resource-counter short-counter">
-                        <label class="item-sheet-resource-label" for="system.quickbar">{{ localize 'SPAO.Quickbar'
-                            }}</label>
-                        <div class="resource-input-wrapper">
-                            <input type="checkbox" {{checked data.system.quickbar}} name="system.quickbar"
-                                id="system.quickbar" value="{{data.system.quickbar}}" data-dtype="Boolean" />
-                        </div>
-                    </div>
-
-                    <!-- Tier -->
-                    <div class="item-resource-counter short-counter">
-                        <label class="item-sheet-resource-label" for="system.tier">{{ localize 'SPAO.Tier' }}</label>
-                        <div class="resource-input-wrapper">
-                            <input type="text" name="system.currentTier" id="system.tier"
-                                value="{{data.system.currentTier}}" data-dtype="Number" />
-                            <span> / </span>
-                            <input type="text" name="system.maxTier" id="system.maxTier" value="{{data.system.maxTier}}"
-                                data-dtype="Number" />
-                        </div>
-                    </div>
-
-                    <!-- Damage Dice -->
-                    <div class="item-resource-counter short-counter">
-                        <label class="item-sheet-resource-label" title="{{ localize 'SPAO.Damage' }}">{{ localize
-                            'SPAO.Damage' }}</label>
-                        <div class="resource-input-wrapper">
-                            <input type="text" name="system.dice.quantity" id="system.dice.quantity"
-                                value="{{data.system.dice.quantity}}" data-dtype="String" style="width: 40%;" />
-                            <select name="system.dice.type" class="item-sheet-skills" style="width: 60%;">
-                                {{#select data.system.dice.type}}
-                                <option value=""></option>
-                                <option value="d2">d2</option>
-                                <option value="d4">d4</option>
-                                <option value="d6">d6</option>
-                                <option value="d8">d8</option>
-                                <option value="d10">d10</option>
-                                <option value="d12">d12</option>
-                                {{/select}}
-                            </select>
-                        </div>
-                    </div>
-
-                    <!-- Tradition -->
-                    <div class="item-resource-counter short-counter">
-                        <label class="item-sheet-resource-label" for="system.tradition">{{ localize 'SPAO.Tradition'
-                            }}</label>
-                        <div class="resource-input-wrapper">
-                            <input type="text" name="system.tradition" id="system.tradition"
-                                value="{{data.system.tradition}}" data-dtype="String" />
-                        </div>
-                    </div>
-
-                    <!-- Cast Time -->
-                    <div class="item-resource-counter short-counter">
-                        <label class="item-sheet-resource-label" for="system.castTime">{{ localize 'SPAO.CastTime'
-                            }}</label>
-                        <div class="resource-input-wrapper">
-                            <input type="text" name="system.castTime" id="system.castTime"
-                                value="{{data.system.castTime}}" data-dtype="Number" />
-                        </div>
-                    </div>
-
-                    <!-- Range -->
-                    <div class="item-resource-counter short-counter">
-                        <label class="item-sheet-resource-label" for="system.range">{{ localize 'SPAO.Range' }}</label>
-                        <div class="resource-input-wrapper">
-                            <input type="text" name="system.range" id="system.range" value="{{data.system.range}}"
-                                data-dtype="Number" />
-                        </div>
-                    </div>
-
-                    <!-- Targets -->
-                    <div class="item-resource-counter short-counter">
-                        <label class="item-sheet-resource-label" for="system.targets">{{ localize 'SPAO.Targets'
-                            }}</label>
-                        <div class="resource-input-wrapper">
-                            <input type="text" name="system.targets" id="system.targets" value="{{data.system.targets}}"
-                                data-dtype="Number" />
-                        </div>
-                    </div>
-
-                    <!-- Defense -->
-                    <div class="item-resource-counter short-counter">
-                        <label class="item-sheet-resource-label" for="system.defense">{{ localize 'SPAO.Defense'
-                            }}</label>
-                        <div class="resource-input-wrapper">
-                            <input type="text" name="system.defense" id="system.defense" value="{{data.system.defense}}"
-                                data-dtype="String" />
-                        </div>
-                    </div>
-
-                    <!-- Duration -->
-                    <div class="item-resource-counter short-counter">
-                        <label class="item-sheet-resource-label" for="system.duration">{{ localize 'SPAO.Duration'
-                            }}</label>
-                        <div class="resource-input-wrapper">
-                            <input type="text" name="system.duration" id="system.duration"
-                                value="{{data.system.duration}}" data-dtype="String" />
-                        </div>
-                    </div>
+            <!-- Tier -->
+            <div class="item-resource-counter short-counter">
+                <label class="item-sheet-resource-label" for="system.tier">{{ localize 'SPAO.Tier' }}</label>
+                <div class="resource-input-wrapper">
+                    <input type="text" name="system.currentTier" id="system.tier" value="{{data.system.currentTier}}"
+                        data-dtype="Number" />
+                    <span> / </span>
+                    <input type="text" name="system.maxTier" id="system.maxTier" value="{{data.system.maxTier}}"
+                        data-dtype="Number" />
                 </div>
             </div>
         </div>
 
-        <div class="item-sheet-section-tabs">
-            <nav class="tabs" data-group="primary">
-                <a class="item" data-group="primary" data-tab="description">{{ localize 'SPAO.Description' }}</a>
-            </nav>
-            <section class="content">
-                <div class="tab" data-group="primary" data-tab="description">
-                    {{ editor enrichedDescription target="system.description" button=true owner=owner editable=editable
-                    engine="prosemirror" collaborate=true }}
-                </div>
-            </section>
-        </div>
+        <div class="item-content">
+            <div class="character-sheet-section-tabs">
+
+                <!-- TABS: NAV HEADER -->
+                <nav class="tabs" data-group="primary">
+                    <a class="item" data-group="primary" data-tab="descricao">{{ localize 'SPAO.Description' }}</a>
+                    <a class="item" data-group="primary" data-tab="detalhes">{{ localize 'SPAO.Details' }}</a>
+
+                </nav>
+
+
+                <section class="content">
+
+                    <!-- TABS: DESCRIÇÃO -->
+                    <div class="tab" data-group="primary" data-tab="descricao">
+                        {{ editor enrichedNotes target="system.description" button=true owner=owner
+                        editable=editable
+                        engine="prosemirror" collaborate=true }}
+                    </div>
+
+                    <!-- TABS: DETALHES -->
+                    <div class="tab" data-group="primary" data-tab="detalhes">
+
+                        <!-- PROPRIEDADES -->
+                        <div class="item-details-section">
+                            <div class="section-title">Propriedades</div>
+
+                            <!-- PROPRIEDADES: TRADIÇÃO -->
+                            <div class="section-content">
+                                <label class="section-label" for="system.tradition">{{ localize
+                                    'SPAO.Tradition'
+                                    }}</label>
+                                <div class="section-input">
+                                    <input type="text" name="system.tradition" id="system.tradition"
+                                        value="{{data.system.tradition}}" data-dtype="String" />
+                                </div>
+                            </div>
+
+                            <!-- PROPRIEDADES: TEMPO DE CONJURAÇÃO -->
+                            <div class="section-content">
+                                <label class="section-label" for="system.castTime">{{ localize
+                                    'SPAO.CastTime'
+                                    }}</label>
+                                <div class="section-input">
+                                    <input type="text" name="system.castTime" id="system.castTime"
+                                        value="{{data.system.castTime}}" data-dtype="Number" />
+                                </div>
+                            </div>
+
+
+                            <!-- PROPRIEDADES: RANGE -->
+                            <div class="section-content">
+                                <label class="section-label" for="system.range">{{ localize
+                                    'SPAO.Range'
+                                    }}</label>
+                                <div class="section-input">
+                                    <input type="text" name="system.range" id="system.range"
+                                        value="{{data.system.range}}" data-dtype="Number" />
+                                </div>
+                            </div>
+
+                            <!-- PROPRIEDADES: TARGETS -->
+                            <div class="section-content">
+                                <label class="section-label" for="system.targets">{{ localize
+                                    'SPAO.Targets'
+                                    }}</label>
+                                <div class="section-input">
+                                    <input type="text" name="system.targets" id="system.targets"
+                                        value="{{data.system.targets}}" data-dtype="Number" />
+                                </div>
+                            </div>
+
+                            <!-- PROPRIEDADES: DURAÇÃO -->
+                            <div class="section-content">
+                                <label class="section-label" for="system.duration">{{ localize
+                                    'SPAO.Duration'
+                                    }}</label>
+                                <div class="section-input">
+                                    <input type="text" name="system.duration" id="system.duration"
+                                        value="{{data.system.duration}}" data-dtype="String" />
+                                </div>
+                            </div>
+                        </div>
+
+
+                        <!-- ATAQUE -->
+                        <div class="item-details-section">
+                            <div class="section-title">Ataque</div>
+
+                            <!-- ATAQUE -->
+                            <div class="item-resource-counter short-counter">
+                                <label class="item-sheet-resource-label" for="system.attack.active">Rolar Ataque</label>
+                                <div class="resource-input-wrapper">
+                                    <input type="checkbox" {{checked data.system.attack.active}}
+                                        name="system.attack.active" id="system.attack.active"
+                                        value="{{data.system.attack.active}}" data-dtype="Boolean" />
+                                </div>
+                            </div>
+
+                            {{#if data.system.attack.active}}
+                            <!-- ATAQUE: ATRIBUTO -->
+                            <div class="section-content">
+                                <label class="section-label" title="{{ localize 'SPAO.Damage' }}">
+                                    Atributo</label>
+                                <div class="section-input">
+                                    <select name="system.attack.atrib" class="item-sheet-skills">
+                                        {{#select data.system.attack.atrib}}
+                                        <option value="">Atributo</option>
+                                        <option value="for">{{localize 'SPAO.for'}}</option>
+                                        <option value="des">{{localize 'SPAO.des'}}</option>
+                                        <option value="int">{{localize 'SPAO.int'}}</option>
+                                        <option value="car">{{localize 'SPAO.car'}}</option>
+                                        {{/select}}
+                                    </select>
+                                </div>
+                            </div>
+
+                            <!-- ATAQUE: PROFICIÊNCIA -->
+                            <div class="section-content">
+                                <label class="section-label" title="{{ localize 'SPAO.Damage' }}">
+                                    Proficiência</label>
+                                <div class="section-input">
+                                    <select name="system.attack.prof" class="item-sheet-skills">
+                                        {{#select data.system.attack.prof}}
+                                        <option value="untrained">{{localize 'SPAO.untrained'}}</option>
+                                        <option value="trained">{{localize 'SPAO.trained'}}</option>
+                                        <option value="expert">{{localize 'SPAO.expert'}}</option>
+                                        <option value="master">{{localize 'SPAO.master'}}</option>
+                                        {{/select}}
+                                    </select>
+                                </div>
+                            </div>
+                            {{/if}}
+                        </div>
+                    </div>
+
+                    <!-- DANO -->
+                    <div class="item-details-section">
+                        <div class="section-title">Dano</div>
+
+                        <!-- DANO: FORMULA -->
+                        <div class="section-content">
+                            <label class="section-label" title="{{ localize 'SPAO.Damage' }}">
+                                Formula</label>
+                            <div class="section-input">
+                                <input type="text" name="system.formula" id="system.formula"
+                                    value="{{data.system.formula}}" data-dtype="String" placeholder="1d6" />
+                            </div>
+                        </div>
+
+                        <!-- DANO: ATRIBUTO -->
+                        <div class="section-content">
+                            <label class="section-label" title="{{ localize 'SPAO.Damage' }}">
+                                Atributo</label>
+                            <div class="section-input">
+                                <select name="system.atrib" class="item-sheet-skills">
+                                    {{#select data.system.atrib}}
+                                    <option value="">Atributo</option>
+                                    <option value="for">{{localize 'SPAO.for'}}</option>
+                                    <option value="des">{{localize 'SPAO.des'}}</option>
+                                    <option value="int">{{localize 'SPAO.int'}}</option>
+                                    <option value="car">{{localize 'SPAO.car'}}</option>
+                                    {{/select}}
+                                </select>
+                            </div>
+                        </div>
+
+                        <!-- DANO: PROFICIÊNCIA -->
+                        <div class="section-content">
+                            <label class="section-label" title="{{ localize 'SPAO.Damage' }}">
+                                Proficiência</label>
+                            <div class="section-input">
+                                <select name="system.prof" class="item-sheet-skills">
+                                    {{#select data.system.prof}}
+                                    <option value="untrained">{{localize 'SPAO.untrained'}}</option>
+                                    <option value="trained">{{localize 'SPAO.trained'}}</option>
+                                    <option value="expert">{{localize 'SPAO.expert'}}</option>
+                                    <option value="master">{{localize 'SPAO.master'}}</option>
+                                    {{/select}}
+                                </select>
+                            </div>
+                        </div>
+
+                        <!-- DANO: TIPO -->
+                        <div class="section-content">
+                            <div class="section-content">
+                                <label class="section-label" title="{{ localize 'SPAO.Damage' }}">
+                                    Tipo</label>
+                                <div class="section-input">
+                                    <select name="system.damageType" class="item-sheet-skills">
+                                        {{#select data.system.damageType}}
+                                        <option value="contusivo">{{localize 'SPAO.contusivo'}}</option>
+                                        <option value="corte">{{localize 'SPAO.corte'}}</option>
+                                        <option value="perfuracao">{{localize 'SPAO.perfuracao'}}</option>
+                                        {{/select}}
+                                    </select>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+
+                    <!-- DEFESA -->
+                    <div class="item-details-section">
+                        <div class="section-title">Defesa</div>
+
+                        <!-- DEFESA -->
+                        <div class="item-resource-counter short-counter">
+                            <label class="item-sheet-resource-label" for="system.save.active">Salvamento</label>
+                            <div class="resource-input-wrapper">
+                                <input type="checkbox" {{checked data.system.save.active}} name="system.save.active"
+                                    id="system.save.active" value="{{data.system.save.active}}" data-dtype="Boolean" />
+                            </div>
+                        </div>
+
+                        {{#if data.system.save.active}}
+                        <!-- DANO: SAVE -->
+                        <div class="section-content">
+                            <label class="section-label" for="system.save.atrib">Atributo</label>
+                            <div class="section-input">
+                                <select name="system.save.atrib" class="item-sheet-skills">
+                                    {{#select data.system.save.atrib}}
+                                    <option value="">Atributo</option>
+                                    <option value="for">{{localize 'SPAO.for'}}</option>
+                                    <option value="des">{{localize 'SPAO.des'}}</option>
+                                    <option value="int">{{localize 'SPAO.int'}}</option>
+                                    <option value="car">{{localize 'SPAO.car'}}</option>
+                                    {{/select}}
+                                </select>
+                            </div>
+                        </div>
+
+                        <!-- DANO: DC -->
+                        <div class="section-content">
+                            <label class="section-label" for="system.save.dc">Dificuldade</label>
+                            <div class="section-input">
+                                <input type="text" name="system.save.dc" id="system.save.dc"
+                                    value="{{data.system.save.dc}}" data-dtype="String" />
+                            </div>
+                        </div>
+                    </div>
+                    {{/if}}
+
+            </div>
+    </section>
     </div>
+    </div>
+    </section>
 </form>

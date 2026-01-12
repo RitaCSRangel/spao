@@ -102,12 +102,10 @@
         "equipped": false
       },
       "hasDamage": {
-        "dice": {
-          "type": "",
-          "quantity": 0
-        },
+        "formula": "",
         "atrib": 0,
         "prof": "untrained",
+        "damageType": "",
         "quickbar": false
       },
       "consumable": {
@@ -151,11 +149,20 @@
         "hasDamage",
         "hasTier"
       ],
+      "attack": {
+        "active": false,
+        "atrib": 0,
+        "prof": "untrained"
+      },
       "tradition": "",
       "castTime": 0,
       "range": 0,
       "targets": 0,
-      "defense": "",
+      "save": {
+        "active": false,
+        "atrib": "",
+        "dc": 0
+      },
       "duration": ""
     },
     "talento": {

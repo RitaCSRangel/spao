@@ -40,7 +40,7 @@
                         {{/if}}
                     </div>
                     <h4 class="dice-total ${resultClass} expandable {{resultClass}}" data-target="attack-details">
-                        {{attackTotal}}
+                        {{attackTotal}} <span class="attack-versus">VS {{targetArmor}} Armadura</span>
                     </h4>
                 </div>
             </div>
@@ -112,7 +112,7 @@
     <!-- DETALHES -->
     <div class="chat-attack-footer">
         <div class="chat-attack-footer-content">
-            <strong>Range:</strong> Melee (5 ft)<br />
+            <strong>Range:</strong> {{attackRange}}<br />
             <strong>Tipo:</strong> {{damageType}}<br />
             <strong>Alvo:</strong> {{targetActor?.name}} (CA: {{targetArmor}})
         </div>

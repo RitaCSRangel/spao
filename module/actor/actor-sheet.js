@@ -199,12 +199,15 @@ export class SpaoActorSheet extends ActorSheet {
     /* --------------- CUSTOM EVENTS  ---------------
     ------------------------------------------------- */
 
-    html.find(".attack-roll").on("click", (ev) => this.RolarAtaque(ev));
-    html.find('.attribute-roll').click(this.RolarSave.bind(this));
-    html.find('.skill-roll').click(this.RolarSkill.bind(this));
+    html.find(".attack-roll").on("click", (ev) => this.RolarTeste(ev, "ataque"));
+    html.find(".attribute-roll").on("click", (ev) => this.RolarTeste(ev, "save"));
+    html.find(".skill-roll").on("click", (ev) => this.RolarTeste(ev, "pericia"));
+    html.find(".item-cast").on("click", (ev) => this.InvocarMagia(ev));
+
+    //html.find('.attribute-roll').click(this.RolarSave.bind(this));
+    //html.find('.skill-roll').click(this.RolarSkill.bind(this));
     html.find(".item-toggle-equipped").on("click", (ev) => this.EquiparItem(ev));
     html.find(".send-item").on("click", (ev) => this.MostrarNoChat(ev));
-    html.find(".item-cast").on("click", (ev) => this.CastarMagia(ev));
 
   }
 
@@ -434,7 +437,48 @@ export class SpaoActorSheet extends ActorSheet {
 
   //----------------------------------------------------------------------------------
 
-  async RolarSkill(event) {
+  async RolarTeste(event, rollType) {
+    event.preventDefault();
+
+    // Criar o conteúdo HTML da caixa de diálogo
+    const content = await renderTemplate(
+      "systems/spao/templates/dialog/roll.html"
+    );
+
+    // Criar e mostrar a caixa de diálogo
+    new Dialog({
+      title: "Rolagem",
+      content: content,
+      buttons: {
+        confirm: {
+          label: "Confirmar",
+          callback: async (html) => {
+            const modificador = html.find('#modificador').val() ?? 0;
+            switch (rollType) {
+              case "ataque":
+                await this.TesteAtaque(event, modificador);
+                break;
+              case "pericia":
+                await this.TesteSkill(event, modificador);
+                break;
+              case "save":
+                await this.TesteSave(event, modificador);
+                break;
+              default:
+                break;
+            }
+          }
+        },
+        cancel: {
+          label: "Cancelar"
+        }
+      },
+      default: "confirm",
+      close: () => { }
+    }).render(true);
+  }
+
+  async TesteSkill(event, modificador) {
     event.preventDefault();
     const element = event.currentTarget;
     const skillKey = element.dataset.skill;
@@ -471,7 +515,7 @@ export class SpaoActorSheet extends ActorSheet {
     }
 
     // Calcular total
-    const totalBonus = skillValue + attributeValue + proficiencyBonus;
+    const totalBonus = skillValue + attributeValue + proficiencyBonus + modificador;
     const formula = `1d20 + ${totalBonus}`;
 
     // Criar e rolar
@@ -506,7 +550,7 @@ export class SpaoActorSheet extends ActorSheet {
     });
   }
 
-  async RolarSave(event) {
+  async TesteSave(event, modificador) {
     event.preventDefault();
     const element = event.currentTarget;
     const attributeKey = element.dataset.abilities;
@@ -521,7 +565,7 @@ export class SpaoActorSheet extends ActorSheet {
     const attributeValue = attribute.value;
 
     // Calcular total
-    const totalBonus = attributeValue;
+    const totalBonus = attributeValue + modificador;
     const formula = `1d20 + ${totalBonus}`;
 
     // Criar e rolar
@@ -555,7 +599,7 @@ export class SpaoActorSheet extends ActorSheet {
     });
   }
 
-  async RolarAtaque(ev) {
+  async TesteAtaque(ev, modificador) {
     // Obter o item de arma associado ao botão clicado
     const li = $(ev.currentTarget).parents(".item");
     const itemId = li.data("itemId");
@@ -565,8 +609,7 @@ export class SpaoActorSheet extends ActorSheet {
       // Obter os valores da arma
       const itemAttribute = item.system.atrib;
       const attributeValue = this.actor.system.abilities[itemAttribute]?.value || 0;
-      const itemDamageDiceType = item.system.dice.type;
-      const itemDamageDiceQuantity = item.system.dice.quantity;
+      const itemDamageFormula = item.system.formula;
 
       // Calcular bônus de proficiência
       let itemProficiency = 0;
@@ -591,7 +634,7 @@ export class SpaoActorSheet extends ActorSheet {
       let attackFormula = "1d20 + @mod";
       let attackRoll = new Roll(attackFormula,
         {
-          mod: attributeValue + itemProficiency
+          mod: attributeValue + itemProficiency + modificador
         }
       );
       await attackRoll.evaluate();
@@ -618,18 +661,14 @@ export class SpaoActorSheet extends ActorSheet {
 
       // Rolagem de Dano (se acertou)
       let damageRoll = null;
-      let damageRollFormula = itemDamageDiceQuantity + itemDamageDiceType;
 
       if (isSuccess) {
-        damageRoll = new Roll(damageRollFormula, {});
+        damageRoll = new Roll(itemDamageFormula, {});
         await damageRoll.evaluate();
       }
 
       // Determinar tipo de dano (do item ou padrão)
-      const damageType = item?.system?.damage?.type || "Tipo de Dano";
-
-      // Criar conteúdo HTML do template
-      const flavor = `${this.actor.name} <br/><small>Para: ${targetActor?.name || "Ninguém"}</small>`;
+      const damageType = item?.system?.damage?.type || "Nenhum";
 
       // Preparar dados para o template
       let data = {
@@ -645,7 +684,9 @@ export class SpaoActorSheet extends ActorSheet {
         itemAttribute: itemAttribute,
         attributeValue: attributeValue,
         itemProficiency: itemProficiency,
-        resultClass: resultClass
+        resultClass: resultClass,
+        attackRange: item.system.range || "Melee (5 ft)",
+        itemAttack: true
       };
 
       const attackContent = await renderTemplate(
@@ -657,12 +698,49 @@ export class SpaoActorSheet extends ActorSheet {
       const message = await ChatMessage.create({
         user: game.user.id,
         speaker: ChatMessage.getSpeaker({ actor: this.actor }),
-        flavor: flavor,
         content: attackContent,
         type: CONST.CHAT_MESSAGE_TYPES.ROLL,
         roll: attackRoll
       });
     }
+  }
+
+  async InvocarMagia(ev) {
+    // Obter o item associado ao botão clicado
+    const li = $(ev.currentTarget).parents(".item");
+    const item = this.actor.items.get(li.data("itemId"));
+
+    if (!item && item.type !== "magia") return;
+
+    const cleanDescription = this.extractTextFromHTML(item.system.description);
+
+    // Mensagem formatada
+    let data = {
+      name: item.name,
+      itemImage: item.img,
+      itemDescription: cleanDescription,
+      itemTradition: item.system.tradition,
+      itemCastTime: item.system.castTime,
+      itemRange: item.system.range,
+      itemTargets: item.system.targets,
+      itemSave: item.system.save.atrib,
+      itemDuration: item.system.duration,
+      itemAttack: item.system.attack.active,
+      itemId: item.id,
+      actorId: this.actor.id,
+      hasContent: item.system.tradition == "" && item.system.castTime == 0 && item.system.range == 0 && item.system.targets == 0 && item.system.save == "" && item.system.duration == 0 ? false : true,
+    }
+
+    const content = await renderTemplate(
+      "systems/spao/templates/chat/magia.html",
+      data
+    );
+
+    ChatMessage.create({
+      user: game.user.id, // Usuário que envia
+      speaker: ChatMessage.getSpeaker({ actor: this.actor }), // Configura o speaker
+      content: content,
+    });
   }
 
   async EquiparItem(ev) {
@@ -703,41 +781,6 @@ export class SpaoActorSheet extends ActorSheet {
       content: content,
     });
   }
-
-  async CastarMagia(ev) {
-    // Obter o item associado ao botão clicado
-    const li = $(ev.currentTarget).parents(".item");
-    const item = this.actor.items.get(li.data("itemId"));
-
-    if (!item && item.type !== "magia") return;
-
-    const cleanDescription = this.extractTextFromHTML(item.system.description);
-
-    // Mensagem formatada
-    let data = {
-      name: item.name,
-      itemImage: item.img,
-      itemDescription: cleanDescription,
-      itemTradition: item.system.tradition,
-      itemCastTime: item.system.castTime,
-      itemRange: item.system.range,
-      itemTargets: item.system.targets,
-      itemDefense: item.system.defense,
-      itemDuration: item.system.duration
-    }
-
-    const content = await renderTemplate(
-      "systems/spao/templates/chat/magia.html",
-      data
-    );
-
-    ChatMessage.create({
-      user: game.user.id, // Usuário que envia
-      speaker: ChatMessage.getSpeaker({ actor: this.actor }), // Configura o speaker
-      content: content,
-    });
-  }
-
   /* --------------- HELPERS ----------------------
   ------------------------------------------------- */
 
