@@ -1334,12 +1334,18 @@
 /******************************************************************************
  * MAGIC SECTION ST                                                           *
  ******************************************************************************/
-.magic-focus-section {
+.magic-info-section {
     padding: 10px;
     display: flex;
     align-items: center;
     gap: 10px;
     justify-content: flex-end;
+    flex-wrap: wrap;
+}
+
+.magic-info-item {
+    display: flex;
+    width: 230px;
 }
 
 .magic-section {

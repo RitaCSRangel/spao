@@ -9,7 +9,7 @@ export class SpaoChatHandlers {
                 ev.preventDefault();
                 const itemId = ev.currentTarget.dataset.itemId;
                 const actorId = ev.currentTarget.dataset.actorId;
-                SpaoChatHandlers.ExecutarAcao(itemId, actorId, "ataque");
+                SpaoChatHandlers.ExecutarAcaoDeMagia(itemId, actorId, "ataque");
             });
 
             // Handle magic save button clicks
@@ -17,14 +17,14 @@ export class SpaoChatHandlers {
                 ev.preventDefault();
                 const itemId = ev.currentTarget.dataset.itemId;
                 const actorId = ev.currentTarget.dataset.actorId;
-                SpaoChatHandlers.ExecutarAcao(itemId, actorId, "save");
+                SpaoChatHandlers.ExecutarAcaoDeMagia(itemId, actorId, "save");
             });
         });
 
     }
 
 
-    static async ExecutarAcao(itemId, actorId, actionType) {
+    static async ExecutarAcaoDeMagia(itemId, actorId, actionType) {
         // Get the actor and item
         const actor = game.actors.get(actorId);
         const item = actor?.items.get(itemId);
@@ -61,8 +61,8 @@ export class SpaoChatHandlers {
 
     static async ExecutarAtaqueDeMagia(actor, item, modificador = 0) {
 
-        const attackAttribute = item.system.attack.atrib;
-        const attackProficiency = item.system.attack.prof;
+        const attackAttribute = actor.magicAttack.atrib;
+        const attackProficiency = actor.magicAttack.prof;
         const attributeValue = actor.system.abilities[attackAttribute]?.value || 0;
 
         let proficiencyBonus = 0;
@@ -154,9 +154,6 @@ export class SpaoChatHandlers {
     static async ExecutarSaveDeMagia(actor, item, modificador = 0) {
         // Get save attribute from spell
         const saveAttribute = item.system.save.atrib;
-
-        // Get actor's attribute value
-        const attributeValue = actor.system.abilities[saveAttribute]?.value || 0;
 
         // Get save DC from spell
         const saveDC = item.system.save.dc || 10;

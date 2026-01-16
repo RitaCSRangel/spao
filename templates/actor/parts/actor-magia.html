@@ -1,15 +1,69 @@
 <!-- FOCO -->
-<div class="magic-focus-section">
+<div class="magic-info-section">
+
+    <!-- ATRIBUTO DE ATAQUE -->
+
+    <div class="resource-counter hp-counter">
+        <label for="system.magicAttack.dc">{{ localize 'SPAO.MagicAtribute' }}</label>
+        <div class="resource-input-wrapper">
+            <select name="system.magicAttack.atrib" class="item-sheet-skills">
+                {{#select system.magicAttack.atrib}}
+                <option value="">Atributo</option>
+                <option value="for">{{localize 'SPAO.for'}}</option>
+                <option value="des">{{localize 'SPAO.des'}}</option>
+                <option value="int">{{localize 'SPAO.int'}}</option>
+                <option value="car">{{localize 'SPAO.car'}}</option>
+                {{/select}}
+            </select>
+        </div>
+    </div>
+
+
+    <!-- PROFICIÊNCIA DE ATAQUE -->
+
+    <div class="resource-counter hp-counter">
+        <label for="system.magicAttack.prof">{{ localize 'SPAO.MagicProficiency' }}</label>
+        <div class="resource-input-wrapper">
+            <select name="system.magicAttack.prof" class="item-sheet-skills">
+                {{#select data.system.magicAttack.prof}}
+                <option value="untrained">{{localize 'SPAO.untrained'}}</option>
+                <option value="trained">{{localize 'SPAO.trained'}}</option>
+                <option value="expert">{{localize 'SPAO.expert'}}</option>
+                <option value="master">{{localize 'SPAO.master'}}</option>
+                {{/select}}
+            </select>
+        </div>
+    </div>
+
+
+    <!-- DC -->
+
+    <div class="resource-counter hp-counter">
+        <label for="system.magicAttack.dc">{{ localize 'SPAO.MagicDC' }}</label>
+        <div class="resource-input-wrapper">
+            <input type="text" name="system.magicAttack.dc" id="system.magicAttack.dc"
+                value="{{data.system.magicAttack.dc}}" data-dtype="Number" />
+        </div>
+    </div>
+
+
+</div>
+
+<!-- PONTOS DE FOCO -->
+<div class="magic-info-section">
+
     <div class="resource-counter hp-counter">
         <label for="system.focus.value">{{ localize 'SPAO.Focus' }}</label>
         <div class="resource-input-wrapper">
             <input type="text" name="system.focus.value" id="system.focus.value" value="{{data.system.focus.value}}"
                 data-dtype="Number" />
             <span> / </span>
-            <input type="text" name="system.focus.max" value="{{data.system.focus.max}}" data-dtype="Number" readonly />
+            <input type="text" name="system.focus.max" value="{{data.system.focus.max}}" data-dtype="Number" />
         </div>
     </div>
+
 </div>
+
 
 <div class="magic-section">
     <!-- Cabeçalho das magias -->

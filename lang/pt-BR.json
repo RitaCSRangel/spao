@@ -85,5 +85,8 @@
   "SPAO.Targets": "Alvos",
   "SPAO.Defense": "Defesa",
   "SPAO.Duration": "Duração",
-  "SPAO.Quickbar": "Atalho"
+  "SPAO.Quickbar": "Atalho",
+  "SPAO.MagicAtribute": "Atributo",
+  "SPAO.MagicProficiency": "Proficiência",
+  "SPAO.MagicDC": "DC"
 }

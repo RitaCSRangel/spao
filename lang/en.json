@@ -89,5 +89,8 @@
   "SPAO.Duration": "Duração",
   "SPAO.AddTalent": "Adicionar Talento",
   "SPAO.AddMagic": "Adicionar Magia",
-  "SPAO.Quickbar": "Atalho"
+  "SPAO.Quickbar": "Atalho",
+  "SPAO.MagicAtribute": "Atributo",
+  "SPAO.MagicProficiency": "Proficiência",
+  "SPAO.MagicDC": "DC"
 }

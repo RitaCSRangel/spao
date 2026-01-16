@@ -712,6 +712,15 @@ export class SpaoActorSheet extends ActorSheet {
 
     if (!item && item.type !== "magia") return;
 
+    // Gastar ponto de foco
+    const used = this.actor.system.focus.used;
+    await this.actor.update({
+      "system.focus.used": used + 1,
+    });
+
+    console.log(this.actor.system)
+
+    // Limpar texto de descrição do item
     const cleanDescription = this.extractTextFromHTML(item.system.description);
 
     // Mensagem formatada
@@ -725,8 +734,8 @@ export class SpaoActorSheet extends ActorSheet {
       itemTargets: item.system.targets,
       itemSave: item.system.save.atrib,
       itemDuration: item.system.duration,
-      itemAttack: item.system.attack.active,
       itemId: item.id,
+      itemAttack: item.system.hasAttack,
       actorId: this.actor.id,
       hasContent: item.system.tradition == "" && item.system.castTime == 0 && item.system.range == 0 && item.system.targets == 0 && item.system.save == "" && item.system.duration == 0 ? false : true,
     }
@@ -794,5 +803,4 @@ export class SpaoActorSheet extends ActorSheet {
     // Retorna apenas o texto
     return tempDiv.textContent || tempDiv.innerText || "";
   }
-
 }

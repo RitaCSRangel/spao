@@ -122,29 +122,27 @@
                             </div>
                         </div>
 
-
-                        <!-- ATAQUE -->
+                        <!-- DANO -->
                         <div class="item-details-section">
-                            <div class="section-title">Ataque</div>
+                            <div class="section-title">Dano</div>
 
-                            <!-- ATAQUE -->
-                            <div class="item-resource-counter short-counter">
-                                <label class="item-sheet-resource-label" for="system.attack.active">Rolar Ataque</label>
-                                <div class="resource-input-wrapper">
-                                    <input type="checkbox" {{checked data.system.attack.active}}
-                                        name="system.attack.active" id="system.attack.active"
-                                        value="{{data.system.attack.active}}" data-dtype="Boolean" />
+                            <!-- DANO: FORMULA -->
+                            <div class="section-content">
+                                <label class="section-label" title="{{ localize 'SPAO.Damage' }}">
+                                    Formula</label>
+                                <div class="section-input">
+                                    <input type="text" name="system.formula" id="system.formula"
+                                        value="{{data.system.formula}}" data-dtype="String" placeholder="1d6" />
                                 </div>
                             </div>
 
-                            {{#if data.system.attack.active}}
-                            <!-- ATAQUE: ATRIBUTO -->
+                            <!-- DANO: ATRIBUTO -->
                             <div class="section-content">
                                 <label class="section-label" title="{{ localize 'SPAO.Damage' }}">
                                     Atributo</label>
                                 <div class="section-input">
-                                    <select name="system.attack.atrib" class="item-sheet-skills">
-                                        {{#select data.system.attack.atrib}}
+                                    <select name="system.atrib" class="item-sheet-skills">
+                                        {{#select data.system.atrib}}
                                         <option value="">Atributo</option>
                                         <option value="for">{{localize 'SPAO.for'}}</option>
                                         <option value="des">{{localize 'SPAO.des'}}</option>
@@ -155,13 +153,13 @@
                                 </div>
                             </div>
 
-                            <!-- ATAQUE: PROFICIÊNCIA -->
+                            <!-- DANO: PROFICIÊNCIA -->
                             <div class="section-content">
                                 <label class="section-label" title="{{ localize 'SPAO.Damage' }}">
                                     Proficiência</label>
                                 <div class="section-input">
-                                    <select name="system.attack.prof" class="item-sheet-skills">
-                                        {{#select data.system.attack.prof}}
+                                    <select name="system.prof" class="item-sheet-skills">
+                                        {{#select data.system.prof}}
                                         <option value="untrained">{{localize 'SPAO.untrained'}}</option>
                                         <option value="trained">{{localize 'SPAO.trained'}}</option>
                                         <option value="expert">{{localize 'SPAO.expert'}}</option>
@@ -170,120 +168,85 @@
                                     </select>
                                 </div>
                             </div>
-                            {{/if}}
-                        </div>
-                    </div>
 
-                    <!-- DANO -->
-                    <div class="item-details-section">
-                        <div class="section-title">Dano</div>
-
-                        <!-- DANO: FORMULA -->
-                        <div class="section-content">
-                            <label class="section-label" title="{{ localize 'SPAO.Damage' }}">
-                                Formula</label>
-                            <div class="section-input">
-                                <input type="text" name="system.formula" id="system.formula"
-                                    value="{{data.system.formula}}" data-dtype="String" placeholder="1d6" />
-                            </div>
-                        </div>
-
-                        <!-- DANO: ATRIBUTO -->
-                        <div class="section-content">
-                            <label class="section-label" title="{{ localize 'SPAO.Damage' }}">
-                                Atributo</label>
-                            <div class="section-input">
-                                <select name="system.atrib" class="item-sheet-skills">
-                                    {{#select data.system.atrib}}
-                                    <option value="">Atributo</option>
-                                    <option value="for">{{localize 'SPAO.for'}}</option>
-                                    <option value="des">{{localize 'SPAO.des'}}</option>
-                                    <option value="int">{{localize 'SPAO.int'}}</option>
-                                    <option value="car">{{localize 'SPAO.car'}}</option>
-                                    {{/select}}
-                                </select>
-                            </div>
-                        </div>
-
-                        <!-- DANO: PROFICIÊNCIA -->
-                        <div class="section-content">
-                            <label class="section-label" title="{{ localize 'SPAO.Damage' }}">
-                                Proficiência</label>
-                            <div class="section-input">
-                                <select name="system.prof" class="item-sheet-skills">
-                                    {{#select data.system.prof}}
-                                    <option value="untrained">{{localize 'SPAO.untrained'}}</option>
-                                    <option value="trained">{{localize 'SPAO.trained'}}</option>
-                                    <option value="expert">{{localize 'SPAO.expert'}}</option>
-                                    <option value="master">{{localize 'SPAO.master'}}</option>
-                                    {{/select}}
-                                </select>
-                            </div>
-                        </div>
-
-                        <!-- DANO: TIPO -->
-                        <div class="section-content">
+                            <!-- DANO: TIPO -->
                             <div class="section-content">
-                                <label class="section-label" title="{{ localize 'SPAO.Damage' }}">
-                                    Tipo</label>
+                                <div class="section-content">
+                                    <label class="section-label" title="{{ localize 'SPAO.Damage' }}">
+                                        Tipo</label>
+                                    <div class="section-input">
+                                        <select name="system.damageType" class="item-sheet-skills">
+                                            {{#select data.system.damageType}}
+                                            <option value="contusivo">{{localize 'SPAO.contusivo'}}</option>
+                                            <option value="corte">{{localize 'SPAO.corte'}}</option>
+                                            <option value="perfuracao">{{localize 'SPAO.perfuracao'}}</option>
+                                            {{/select}}
+                                        </select>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+
+                        <!-- DEFESA -->
+                        <div class="item-details-section">
+                            <div class="section-title">Defesa</div>
+
+                            <!-- DEFESA -->
+                            <div class="item-resource-counter short-counter">
+                                <label class="item-sheet-resource-label" for="system.save.active">Salvamento</label>
+                                <div class="resource-input-wrapper">
+                                    <input type="checkbox" {{checked data.system.save.active}} name="system.save.active"
+                                        id="system.save.active" value="{{data.system.save.active}}"
+                                        data-dtype="Boolean" />
+                                </div>
+                            </div>
+
+                            {{#if data.system.save.active}}
+                            <!-- DANO: SAVE -->
+                            <div class="section-content">
+                                <label class="section-label" for="system.save.atrib">Atributo</label>
                                 <div class="section-input">
-                                    <select name="system.damageType" class="item-sheet-skills">
-                                        {{#select data.system.damageType}}
-                                        <option value="contusivo">{{localize 'SPAO.contusivo'}}</option>
-                                        <option value="corte">{{localize 'SPAO.corte'}}</option>
-                                        <option value="perfuracao">{{localize 'SPAO.perfuracao'}}</option>
+                                    <select name="system.save.atrib" class="item-sheet-skills">
+                                        {{#select data.system.save.atrib}}
+                                        <option value="">Atributo</option>
+                                        <option value="for">{{localize 'SPAO.for'}}</option>
+                                        <option value="des">{{localize 'SPAO.des'}}</option>
+                                        <option value="int">{{localize 'SPAO.int'}}</option>
+                                        <option value="car">{{localize 'SPAO.car'}}</option>
                                         {{/select}}
                                     </select>
                                 </div>
                             </div>
 
-                        </div>
-                    </div>
-
-                    <!-- DEFESA -->
-                    <div class="item-details-section">
-                        <div class="section-title">Defesa</div>
-
-                        <!-- DEFESA -->
-                        <div class="item-resource-counter short-counter">
-                            <label class="item-sheet-resource-label" for="system.save.active">Salvamento</label>
-                            <div class="resource-input-wrapper">
-                                <input type="checkbox" {{checked data.system.save.active}} name="system.save.active"
-                                    id="system.save.active" value="{{data.system.save.active}}" data-dtype="Boolean" />
+                            <!-- DANO: DC -->
+                            <div class="section-content">
+                                <label class="section-label" for="system.save.dc">Dificuldade</label>
+                                <div class="section-input">
+                                    <input type="text" name="system.save.dc" id="system.save.dc"
+                                        value="{{data.system.save.dc}}" data-dtype="String" />
+                                </div>
                             </div>
                         </div>
 
-                        {{#if data.system.save.active}}
-                        <!-- DANO: SAVE -->
-                        <div class="section-content">
-                            <label class="section-label" for="system.save.atrib">Atributo</label>
-                            <div class="section-input">
-                                <select name="system.save.atrib" class="item-sheet-skills">
-                                    {{#select data.system.save.atrib}}
-                                    <option value="">Atributo</option>
-                                    <option value="for">{{localize 'SPAO.for'}}</option>
-                                    <option value="des">{{localize 'SPAO.des'}}</option>
-                                    <option value="int">{{localize 'SPAO.int'}}</option>
-                                    <option value="car">{{localize 'SPAO.car'}}</option>
-                                    {{/select}}
-                                </select>
-                            </div>
-                        </div>
+                        <!-- ATAQUE -->
+                        <div class="item-details-section">
+                            <div class="section-title">Ataque</div>
 
-                        <!-- DANO: DC -->
-                        <div class="section-content">
-                            <label class="section-label" for="system.save.dc">Dificuldade</label>
-                            <div class="section-input">
-                                <input type="text" name="system.save.dc" id="system.save.dc"
-                                    value="{{data.system.save.dc}}" data-dtype="String" />
+                            <!-- ATAQUE -->
+                            <div class="item-resource-counter short-counter">
+                                <label class="item-sheet-resource-label" for="system.hasAttack">Ataque</label>
+                                <div class="resource-input-wrapper">
+                                    <input type="checkbox" {{checked data.system.hasAttack}} name="system.hasAttack"
+                                        id="system.hasAttack" value="{{data.system.hasAttack}}"
+                                        data-dtype="Boolean" />
+                                </div>
                             </div>
-                        </div>
-                    </div>
-                    {{/if}}
 
+                        </div>
+                        
+                </section>
             </div>
-    </section>
-    </div>
-    </div>
+        </div>
     </section>
 </form>

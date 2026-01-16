@@ -62,6 +62,11 @@
             "atrib": "",
             "prof": "untrained"
           }
+        },
+        "magicAttack": {
+          "atrib": "",
+          "prof": "untrained",
+          "dc": 0
         }
       }
     },
@@ -115,8 +120,8 @@
         }
       },
       "hasTier": {
-        "maxTier": 0,
-        "currentTier": 0
+        "maxTier": 1,
+        "currentTier": 1
       }
     },
     "item": {
@@ -149,15 +154,11 @@
         "hasDamage",
         "hasTier"
       ],
-      "attack": {
-        "active": false,
-        "atrib": 0,
-        "prof": "untrained"
-      },
       "tradition": "",
       "castTime": 0,
       "range": 0,
       "targets": 0,
+      "hasAttack": false,
       "save": {
         "active": false,
         "atrib": "",

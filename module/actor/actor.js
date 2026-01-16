@@ -27,7 +27,7 @@ export class SpaoActor extends Actor {
     super.prepareData();
 
     this.system.useItemIcons = game.settings.get("spao", "use-item-icons");
-    
+
     if (this.type === "personagem") this._prepareCharacterData();
     if (this.type === "npc") this._prepareNpcData();
   }
@@ -43,8 +43,9 @@ export class SpaoActor extends Actor {
     this.system.hp.max = this.calculateMaxHealth();
     this.system.hp.value = this.calculateCurrentHealth();
     this.system.armor.value = this.calculateArmor();
-    this.system.focus.max = this.calculateMaxFocus();
+    //this.system.focus.max = this.calculateMaxFocus();
     this.system.focus.value = this.calculateCurrentFocus();
+    this.system.magicAttack.dc = this.calculateMagicDC();
   }
 
   /**
@@ -126,5 +127,12 @@ export class SpaoActor extends Actor {
   calculateCurrentFocus() {
     const focus = this.system.focus.max - this.system.focus.used;
     return Math.round(focus);
+  }
+
+  calculateMagicDC() {
+    const attackAttribute = actor.magicAttack.atrib;
+    const attributeValue = this.system.abilities[attackAttribute]?.value || 0;
+    const dc = 10 + attributeValue;
+    return Math.round(dc);
   }
 }
