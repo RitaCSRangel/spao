@@ -23,7 +23,6 @@ export class SpaoChatHandlers {
 
     }
 
-
     static async ExecutarAcaoDeMagia(itemId, actorId, actionType) {
         // Get the actor and item
         const actor = game.actors.get(actorId);
@@ -57,7 +56,6 @@ export class SpaoChatHandlers {
             default: "confirm"
         }).render(true);
     }
-
 
     static async ExecutarAtaqueDeMagia(actor, item, modificador = 0) {
 
@@ -152,14 +150,42 @@ export class SpaoChatHandlers {
     }
 
     static async ExecutarSaveDeMagia(actor, item, modificador = 0) {
+        // O 'actor' aqui é o ator dono da magia (conjurador)
+        // Precisamos determinar quem está fazendo o teste de salvamento
+
+        let savingThrowActor = null;
+        let savingThrowSpeaker = null;
+
+        // Verifica se há tokens selecionados no canvas
+        if (canvas.tokens.controlled.length > 0) {
+            // Usa o primeiro token selecionado como alvo fazendo o teste
+            savingThrowActor = canvas.tokens.controlled[0].actor;
+            savingThrowSpeaker = ChatMessage.getSpeaker({ actor: savingThrowActor });
+        } else {
+            // Se nenhum token estiver selecionado, usa o usuário atual
+            savingThrowActor = game.user.character;
+            savingThrowSpeaker = ChatMessage.getSpeaker();
+        }
+
+        // Se ainda não tiver ator, usa o ator dono da magia como fallback
+        if (!savingThrowActor) {
+            savingThrowActor = actor;
+            savingThrowSpeaker = ChatMessage.getSpeaker({ actor: actor });
+        }
+
         // Get save attribute from spell
         const saveAttribute = item.system.save.atrib;
 
         // Get save DC from spell
         const saveDC = item.system.save.dc || 10;
 
-        // Calculate total bonus
-        const totalBonus = attributeValue + modificador;
+        // Get the saving throw bonus from the target actor
+        // Assumindo que os testes de salvamento estão em actor.system.saves[saveAttribute]
+        const saveBonus = savingThrowActor.system.saves?.[saveAttribute]?.value || 0;
+        const attributeValue = savingThrowActor.system.abilities?.[saveAttribute]?.value || 0;
+
+        // Calculate total bonus (save bonus + modifier)
+        const totalBonus = saveBonus + modificador;
         const formula = `1d20 + ${totalBonus}`;
 
         // Create and roll
@@ -174,23 +200,30 @@ export class SpaoChatHandlers {
 
         // Mensagem formatada
         const saveName = game.i18n.localize(`SPAO.${saveAttribute}`) || saveAttribute;
+
         let data = {
             saveRoll: saveRoll,
             saveName: saveName,
             totalBonus: totalBonus,
             saveValue: totalBonus,
             attributeValue: attributeValue,
-            saveTotal: saveTotal
-        }
+            saveTotal: saveTotal,
+            saveDC: saveDC,
+            isSuccess: isSuccess,
+            resultClass: resultClass,
+            savingThrowActor: savingThrowActor,
+            spellCaster: actor,
+            spellName: item.name
+        };
 
         const content = await renderTemplate(
             "systems/spao/templates/chat/save.html",
             data
         );
 
-        // Enviar para o chat
+        // Enviar para o chat usando o speaker correto (quem está fazendo o teste)
         saveRoll.toMessage({
-            speaker: ChatMessage.getSpeaker({ actor: this.actor }),
+            speaker: savingThrowSpeaker,
             content: content
         });
     }
