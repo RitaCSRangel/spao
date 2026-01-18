@@ -1,3 +1,8 @@
+import {
+  onManageActiveEffect,
+  prepareActiveEffectCategories,
+} from '../helpers/efeitos.js';
+
 /**
  * Extend the basic ActorSheet with some very simple modifications
  * @extends {ActorSheet}
@@ -76,6 +81,13 @@ export class SpaoActorSheet extends ActorSheet {
       }
     );
 
+    // Prepare active effects
+    context.effects = prepareActiveEffectCategories(
+      // A generator that returns all effects stored on the actor
+      // as well as any items
+      this.actor.allApplicableEffects()
+    );
+    
     return context;
   }
 

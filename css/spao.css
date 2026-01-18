@@ -15,13 +15,10 @@
     font-weight: bold;
 }
 
+
 /******************************************************************************
  * Default style.                                                             * 
  ******************************************************************************/
-.window-content {
-    background: #f2f2f2 !important;
-    color: black;
-}
 
 .dialog-button {
     background-color: #333;
@@ -1641,4 +1638,186 @@
     align-items: center;
     padding: 2px;
     width: 80%;
+}
+
+/******************************************************************************
+ * EFFECTS SECTION LIST                                                      *
+ ******************************************************************************/
+
+.effects-list {
+    padding: 10px;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.effects-header {
+    display: grid;
+    grid-template-columns: 2fr 1fr 1fr 1fr;
+    align-items: center;
+    padding: 10px;
+    background: #f5f5f5;
+    border-radius: 4px;
+    font-weight: bold;
+    gap: 15px;
+    border-bottom: 2px solid #333;
+}
+
+.effects-header .item-name {
+    font-size: 18px;
+    color: #333;
+}
+
+.effects-header .effect-source,
+.effects-header .effect-duration {
+    text-align: center;
+    color: #666;
+}
+
+.effect-controls {
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+}
+
+.effect-controls a {
+    cursor: pointer;
+    color: #666;
+    transition: color 0.2s, background-color 0.2s;
+    padding: 4px 8px;
+    border-radius: 3px;
+    font-family: "Alegreya", Times, "Times New Roman", Georgia, serif;
+    font-size: 14px;
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+}
+
+.effect-controls a:hover {
+    color: white;
+    background-color: #333;
+}
+
+.item-list {
+    max-height: 400px;
+    overflow-y: auto;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    background: white;
+    margin-top: 5px;
+}
+
+.effect-item {
+    display: grid;
+    grid-template-columns: 40px 2fr 1fr 1fr 1fr;
+    align-items: center;
+    padding: 12px 10px;
+    border-bottom: 1px solid #eee;
+    gap: 15px;
+    transition: background-color 0.2s;
+}
+
+.effect-item:hover {
+    background-color: #f9f9f9;
+}
+
+.effect-item:last-child {
+    border-bottom: none;
+}
+
+.effect-name {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.effect-name .item-image {
+    width: 40px;
+    height: 40px;
+    object-fit: contain;
+    border: 1px solid #ddd;
+    border-radius: 3px;
+}
+
+.effect-name h4 {
+    margin: 0;
+    font-weight: 500;
+    color: #333;
+    font-size: 16px;
+}
+
+.effect-source,
+.effect-duration {
+    text-align: center;
+    color: #555;
+    font-size: 14px;
+}
+
+.effect-item-controls {
+    display: flex;
+    justify-content: flex-end;
+    gap: 8px;
+    opacity: 0.7;
+    transition: opacity 0.2s;
+}
+
+.effect-item:hover .effect-item-controls {
+    opacity: 1;
+}
+
+.effect-item-controls a {
+    cursor: pointer;
+    color: #666;
+    transition: color 0.2s, background-color 0.2s;
+    width: 28px;
+    height: 28px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 4px;
+}
+
+.effect-item-controls a:hover {
+    color: white;
+    background-color: #333;
+}
+
+.effect-item-controls .effect-control[data-action="toggle"]:hover {
+    background-color: #2ecc71 !important;
+}
+
+.effect-item-controls .effect-control[data-action="edit"]:hover {
+    background-color: #3498db !important;
+}
+
+.effect-item-controls .effect-control[data-action="delete"]:hover {
+    background-color: #e74c3c !important;
+}
+
+/* Estilo para efeitos desabilitados */
+.effect-item.disabled {
+    opacity: 0.6;
+    background-color: #f5f5f5;
+}
+
+.effect-item.disabled .effect-name h4 {
+    color: #999;
+    text-decoration: line-through;
+}
+
+/* Mensagem quando não há efeitos */
+.no-effects-message {
+    text-align: center;
+    padding: 40px 20px;
+    color: #777;
+    font-style: italic;
+    background: #f9f9f9;
+    border-radius: 4px;
+    grid-column: 1 / -1;
+}
+
+.no-effects-message p {
+    margin: 0;
+    font-size: 16px;
 }

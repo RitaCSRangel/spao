@@ -1,10 +1,10 @@
 // Import document classes.
-import { SpaoActor } from './actor/actor.js';
-import { SpaoItem } from './item/item.js';
+import { SpaoActor } from './documents/actor.js';
+import { SpaoItem } from './documents/item.js';
 
 // Import sheet classes.
-import { SpaoActorSheet } from './actor/actor-sheet.js';
-import { SpaoItemSheet } from './item/item-sheet.js';
+import { SpaoActorSheet } from './sheets/actor-sheet.js';
+import { SpaoItemSheet } from './sheets/item-sheet.js';
 
 // Import helper/utility classes and constants.
 import { SPAO } from './helpers/config.js';
@@ -58,7 +58,7 @@ Hooks.once('init', function () {
 
 Hooks.once('ready', function () {
 
-    SpaoChatHandlers.initialize();
+  SpaoChatHandlers.initialize();
 
   // Wait to register hotbar drop hook on ready so that modules could register earlier if they want to
   Hooks.on('hotbarDrop', (bar, data, slot) => createItemMacro(data, slot));
@@ -112,4 +112,10 @@ const configureHandleBars = () => {
   Handlebars.registerHelper('gt', function (a, b) {
     return a > b;
   });
+
+  // Helpers Handlebars para efeitos
+  Handlebars.registerHelper('hasEffect', function (effects) {
+    return effects.length > 0;
+  });
+
 };

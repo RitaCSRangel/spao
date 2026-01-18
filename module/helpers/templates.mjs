@@ -9,7 +9,8 @@ export const preloadHandlebarsTemplates = async function () {
     'systems/spao/templates/actor/parts/actor-pericias.html',
     'systems/spao/templates/actor/parts/actor-inventario.html',
     'systems/spao/templates/actor/parts/actor-talentos.html',
-    'systems/spao/templates/actor/parts/actor-magia.html'
+    'systems/spao/templates/actor/parts/actor-magia.html',
+    'systems/spao/templates/actor/parts/actor-efeitos.html'
     // // Item partials
     // 'systems/spao/templates/item/parts/item-effects.hbs',
   ]);

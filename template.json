@@ -95,7 +95,8 @@
       "armadura",
       "magia",
       "talento",
-      "kit"
+      "kit",
+      "efeito"
     ],
     "templates": {
       "itemBase": {
@@ -178,6 +179,19 @@
         "base",
         "itemBase"
       ]
+    },
+    "efeito": {
+      "templates": [
+        "base",
+        "itemBase"
+      ],
+      "active": false,
+      "duration": {
+        "rounds": 0,
+        "turns": 0,
+        "seconds": 0
+      },
+      "changes": []
     }
   }
 }

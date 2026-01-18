@@ -1,0 +1,63 @@
+<div class="inventory-section">
+
+    <!-- Cabeçalho do inventário -->
+    {{#each effects as |section sid|}}
+    <div class="spao-items-list-header">
+        <div class="inventory-header-name">{{localize section.label}}</div>
+        <div class="item-controls effect-controls flexrow">
+            <a class="effect-control" data-action="create" title="{{localize 'DOCUMENT.Create' type='Effect'}}">
+                <i class="fas fa-plus"></i> {{localize "DOCUMENT.New" type="Effect"}}
+            </a>
+        </div>
+    </div>
+
+    <!-- Lista de itens -->
+    <div class="inventory-items-list">
+        <ol class="item-list">
+            {{#each section.effects as |effect|}}
+            <li class="item effect flexrow" data-effect-id="{{effect.id}}" data-parent-id="{{effect.parent.id}}">
+                <div class="item spao-items-list-row inventory-item-row" data-parent-id="{{effect.parent.id}}">
+                    <div class="spao-items-list-row-header">
+                        <!-- Imagem do item -->
+                        <div class="inventory-item-image">
+                            <img class="send-item" src="{{effect.icon}}" title="{{effect.name}}" />
+                        </div>
+
+                        <!-- Nome do item -->
+                        <div class="spao-item-name-and-tags inventory-item-name">
+                            <a class="item-name">{{effect.name}}</a>
+                        </div>
+
+                        <div class="effect-source">{{effect.sourceName}}</div>
+                        <div class="effect-duration">{{effect.duration.label}}</div>
+
+                        <!-- Botões de ação -->
+                        <div class="spao-item-controls inventory-item-controls">
+                            <a class="effect-control" data-action="toggle" title="{{localize 'SPAO.Effect.Toggle'}}">
+                                <i class="fas {{#if effect.disabled}}fa-check{{else}}fa-times{{/if}}"></i>
+                            </a>
+                            <a class="effect-control" data-action="edit"
+                                title="{{localize 'DOCUMENT.Update' type='Effect'}}">
+                                <i class="fas fa-edit"></i>
+                            </a>
+                            <a class="effect-control" data-action="delete"
+                                title="{{localize 'DOCUMENT.Delete' type='Effect'}}">
+                                <i class="fas fa-trash"></i>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </li>
+            {{/each}}
+        </ol>
+
+        <!-- Mensagem quando não há talentos -->
+        {{#unless (hasEffect section.effects)}}
+        <div class="no-talents-message">
+            <p>{{ localize 'SPAO.NoEffects' }}</p>
+        </div>
+        {{/unless}}
+    </div>
+    {{/each}}
+
+</div>
